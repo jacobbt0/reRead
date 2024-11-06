@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
 			required: [true, "Password is required"],
 			minlength: [6, "Password must be at least 6 characters long"],
         },
+        role:{
+            type:String,
+            enum:["admin", "user"],
+            default: "user",
+        },
 
 },{
     timestamps:true,
@@ -27,5 +32,20 @@ const userSchema = new mongoose.Schema(
 )
 
 userSchema.pre("save",async function (next) {
-    if(!this.isModified())
+    if(!this.isModified("password")) return next()
+    try {
+        const salt = await bcrypt.genSalt(10)
+        this.password = await bcrypt.hash(this.password,salt)
+        next()
+    } catch (error) {
+        next(error)
+    }
 })
+
+userSchema.methods.comparePassword = async function (password){
+    return bcrypt.compare(password,this.password)
+}
+
+const User = mongoose.models("User",userSchema)
+
+export default User
