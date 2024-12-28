@@ -26,9 +26,15 @@ const bookSchema = new mongoose.Schema(
         },
         author: {
             type: String,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
         }
 
-    }
+    }, {
+    timestamps: true
+}
 )
 
 const Product = model('book', bookSchema)

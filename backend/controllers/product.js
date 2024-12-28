@@ -1,5 +1,6 @@
 import Product from "../models/product.js"
 import cloudinary from "../lib/cloudinary.js"
+import cron from "node-cron"
 
 export const getAllBooks = async (req, res) => {
     try {
@@ -13,11 +14,12 @@ export const getAllBooks = async (req, res) => {
 
 export const createBook = async (req, res) => {
     try {
+       
 
         const { title, price, department, semester, bookImage, author } = req.body
         let cloudinaryResponse = null
 
-        if(image){
+        if(bookImage){
             cloudinaryResponse = await cloudinary.uploader.upload(bookImagemage, {folder: "books"})
         }
 
@@ -42,27 +44,29 @@ export const createBook = async (req, res) => {
 
 export const deleteBook = async (req, res) => {
     try {
-        const book = await Product.findById(req.params.id)
+		const book = await Product.findById(req.params.id);
 
-        if(!book){
-            res.status(404).json({ message: "Book not found"})
-        }
+		if (!book) {
+			return res.status(404).json({ message: "Product not found" });
+		}
 
-        if(book.bookImage){
-            const publicId = book.bookImage.split("/").pop().split(".")[0]
-            try {
-                await cloudinary.uploader.destroy(`books/${publicId}`)
-                console.log('Image deleted from cloudinary')
-            } catch (error) {
-                console.log(error.message)
-            }
-        await Product.findByIdAndDelete(req.params.id)
-        res.json({message: "book deleted successfully"})
-        }
-    } catch (error) {
-        console.log("error in deleteBook controller", error.message)
-        res.status(500).json({ message: "Server error", error: error.message })
-    }
+		if (book.image) {
+			const publicId = product.image.split("/").pop().split(".")[0];
+			try {
+				await cloudinary.uploader.destroy(`products/${publicId}`);
+				console.log("deleted image from cloduinary");
+			} catch (error) {
+				console.log("error deleting image from cloduinary", error);
+			}
+		}
+
+		await Product.findByIdAndDelete(req.params.id);
+
+		res.json({ message: "Product deleted successfully" });
+	} catch (error) {
+		console.log("Error in deleteProduct controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
 }
 
 export const getBooksBySemester = async (req, res) => {
@@ -77,3 +81,15 @@ export const getBooksBySemester = async (req, res) => {
     }
 
 } 
+
+cron.schedule("0 0 * * *", async () => {  // Runs every day at midnight
+    try {
+        const result = await Product.deleteMany({
+            createdAt: { $lt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000) },
+        });
+
+        console.log(`Deleted ${result.deletedCount} products older than 20 days.`);
+    } catch (err) {
+        console.error("Error deleting products:", err);
+    }
+})

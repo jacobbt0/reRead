@@ -1,6 +1,7 @@
 import User from '../models/user.js'
 import jwt from 'jsonwebtoken'
 
+
 const generateTokens = (userId) => {
 	const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
 		expiresIn: "15m",
@@ -29,11 +30,15 @@ const setCookies = (res, accessToken, refreshToken) => {
 }
 
 export const signup = async (req, res) => {
+	
     const { name, email, password } = req.body
     try {
         const userExist = await User.findOne({ email })
+		if(password.length < 6){
+			return res.status(400).json({ message: "Password must be at least 6 characters long" })
+		}
         if (userExist) {
-            return res.status(400).json({ messsage: "User already exists" })
+            return res.status(400).json({ message: "User already exists" })
         }
         const user = await User.create({ name, email, password })
 
@@ -43,7 +48,7 @@ export const signup = async (req, res) => {
 		setCookies(res, accessToken, refreshToken)
 
         res.status(201).json({
-            messsage: "User created successfully",
+            message: "User created successfully",
             _id: user._id,
             name: user.name,
             email: user.email,
@@ -73,7 +78,7 @@ export const login = async (req, res) => {
                 role: user.role
             })
         } else {
-            return res.status(400).json({ messsage: "Invalid email or password" })
+            return res.status(400).json({ message: "Invalid email or password" })
         }
 
     } catch (error) {
@@ -96,5 +101,39 @@ export const logout = async (req, res) => {
 	} catch (error) {
 		console.log("Error in logout controller", error.message);
 		res.status(500).json({ message: "Server error", error: error.message });
+	}
+}
+
+export const refreshToken = async (req, res) => {
+	try {
+		const refreshToken = req.cookies.refreshToken
+
+		if (!refreshToken) {
+			return res.status(401).json({ message: "No refresh token provided" })
+		}
+
+		const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+
+		const accessToken = jwt.sign({ userId: decoded.userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" })
+
+		res.cookie("accessToken", accessToken, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "strict",
+			maxAge: 15 * 60 * 1000,
+		});
+
+		res.json({ message: "Token refreshed successfully" });
+	} catch (error) {
+		console.log("Error in refreshToken controller", error.message)
+		res.status(500).json({ message: "Server error", error: error.message })
+	}
+}
+
+export const getProfile = async (req, res) => {
+	try {
+		res.json(req.user)
+	} catch (error) {
+		res.status(500).json({ message: "Server error", error: error.message })
 	}
 }
