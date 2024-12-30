@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react'
 import HomePage from './pages/HomePage'
 import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
-import SignupPage from './pages/SignupPage'
+import SignUpPage from './pages/SignUpPage'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Toaster } from "react-hot-toast";
 import { useUserStore } from './stores/useUserStore'
+import  LoadingSpinner  from './components/LoadingSpinner'
+import Navbar from './components/Navbar'
+import CreateProductForm from './pages/CreateBooksForm'
+import SemesterBooksPage from './pages/SemesterBookspage'
 
 function App() {
 
@@ -13,7 +17,10 @@ function App() {
 
   useEffect(()=>{
     checkAuth()
-  },[checkAuth]);
+  },[checkAuth])
+
+  if (checkingAuth) return <LoadingSpinner />
+
   return (
     <div className='min-h-screen  bg-gray-900 text-white relative overflow-hidden'>
     {/* Background gradient */}
@@ -24,12 +31,14 @@ function App() {
     </div>
 
     <div className='relative z-50 pt-20'>
-
+      <Navbar/>
       <Routes>
         <Route path='/' element={<HomePage/>}/>
         <Route path='/login' element={!user ? <LoginPage/> : <Navigate to="/"/>}/>
-        <Route path='/signup' element={!user ? <SignupPage/> : <Navigate to="/"/>}/>
+        <Route path='/signup' element={!user ? <SignUpPage/> : <Navigate to="/"/>}/>
         <Route path='/admin' element={<AdminPage/>} />
+        <Route path='/sell' element={<CreateProductForm/>}/>
+        <Route path='/:department/:semester' element={<SemesterBooksPage/>}/>
       </Routes>
 
    </div>

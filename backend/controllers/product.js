@@ -20,7 +20,7 @@ export const createBook = async (req, res) => {
         let cloudinaryResponse = null
 
         if(bookImage){
-            cloudinaryResponse = await cloudinary.uploader.upload(bookImagemage, {folder: "books"})
+            cloudinaryResponse = await cloudinary.uploader.upload(bookImage, {folder: "books"})
         }
 
         const book = await Product.create({
@@ -70,10 +70,12 @@ export const deleteBook = async (req, res) => {
 }
 
 export const getBooksBySemester = async (req, res) => {
-    const {semester, department} = req.params
-
+    const {department, semester} = req.params
+    
+  
     try {
-        const books = await Product.find({ semester, department})
+        const books = await Product.find({  department: new RegExp(department, 'i'), semester}) 
+        console.log(books)
         res.json(books)
     } catch (error) {
         console.log("Error in getBookBySemester controller", error.message)

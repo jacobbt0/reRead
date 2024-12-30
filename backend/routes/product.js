@@ -12,5 +12,6 @@ const router = express.Router()
 router.get('/',protectRoute, adminRoute, getAllBooks)
 router.post('/',protectRoute, createBook )
 router.delete('/:id', deleteBook)
+router.get('/:department/:semester', getBooksBySemester)
  
 export default router
