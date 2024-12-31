@@ -4,7 +4,7 @@ import { PlusCircle, Upload, Loader,  } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
 
 const departments = ["BCA",]
-const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th","8th"]
+const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"]
 
 const CreateProductForm = () => {
 	const [newProduct, setNewProduct] = useState({

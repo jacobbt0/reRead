@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { useProductStore } from "../stores/useProductStore";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import ProductCard from "../components/ProductCard";
+import Semester from "../components/Semester";
 
 const SemesterBooksPage = () => {
 	const { fetchProductsBySemester, products } = useProductStore();
 
-	const { department, semester} = useParams()
-  
+	const { department, semester } = useParams()
+	const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"]
 
 	useEffect(() => {
 		fetchProductsBySemester(department, semester);
@@ -17,6 +18,8 @@ const SemesterBooksPage = () => {
 
 	return (
 		<div className='min-h-screen'>
+			
+			<Semester semesters={semesters}/>
 			<div className='relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
 				<motion.h1
 					className='text-center text-4xl sm:text-5xl font-bold text-emerald-400 mb-8'
@@ -24,7 +27,7 @@ const SemesterBooksPage = () => {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
 				>
-					{department.toUpperCase()+" " + semester +" Semester" }
+					{department.toUpperCase() + " " + semester + " Semester"}
 				</motion.h1>
 
 				<motion.div

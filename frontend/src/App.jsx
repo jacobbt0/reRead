@@ -38,6 +38,7 @@ function App() {
         <Route path='/signup' element={!user ? <SignUpPage/> : <Navigate to="/"/>}/>
         <Route path='/admin' element={<AdminPage/>} />
         <Route path='/sell' element={<CreateProductForm/>}/>
+        <Route path='/:department/' element={<SemesterBooksPage/>}/>
         <Route path='/:department/:semester' element={<SemesterBooksPage/>}/>
       </Routes>
 

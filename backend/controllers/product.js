@@ -75,7 +75,7 @@ export const getBooksBySemester = async (req, res) => {
   
     try {
         const books = await Product.find({  department: new RegExp(department, 'i'), semester}) 
-        console.log(books)
+        
         res.json(books)
     } catch (error) {
         console.log("Error in getBookBySemester controller", error.message)
