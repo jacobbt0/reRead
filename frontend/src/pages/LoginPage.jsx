@@ -3,12 +3,28 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { LogIn, Mail, Lock, ArrowRight, Loader } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'
+
+
 
 const LoginPage = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("")
+	const { login, loading, loginWithGoogle } = useUserStore()
+	const clientId = "770439825399-vf9io9g7viclfnqquriom5i2o8fvrrt3.apps.googleusercontent.com"
+	
 
-	const { login, loading } = useUserStore()
+	const handleLoginSuccess = (response) => {
+		console.log('Login Success:', response);
+		
+		const token = response.credential
+		loginWithGoogle(token)
+		
+	}
+
+	const handleLoginFailure = (error) => {
+		console.log('Login Failed:', error);
+	  }
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -99,20 +115,17 @@ const LoginPage = () => {
 							)}
 						</button>
 					</form>
-					
-					<div className="mt-5">
-						<button
-							type='submit'
-							className='w-full flex justify-center py-2 px-4 border border-transparent 
-							rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600
-							 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-							  focus:ring-emerald-500 transition duration-150 ease-in-out disabled:opacity-50'
 
-						>
-							<img className="mr-2 h-5 w-5" 
-							 src="https://www.svgrepo.com/show/303108/google-icon-logo.svg" 
-							 alt="google logo"  />
-							Continue with Google</button>
+					<div className="mt-5">
+						<GoogleOAuthProvider clientId={clientId}>
+
+							<GoogleLogin
+								onSuccess={handleLoginSuccess}
+								onError={handleLoginFailure}
+								useOneTap
+							/>
+
+						</GoogleOAuthProvider>
 					</div>
 
 
@@ -122,9 +135,9 @@ const LoginPage = () => {
 							Sign up now <ArrowRight className='inline h-4 w-4' />
 						</Link>
 					</p>
-				</div>
-			</motion.div>
-		</div>
+				</div >
+			</motion.div >
+		</div >
 	);
 };
 export default LoginPage

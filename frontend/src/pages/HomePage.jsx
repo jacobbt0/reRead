@@ -3,13 +3,8 @@ import Department  from "../components/Department";
 
 
 const departments = [
-	{ href: "/bca", name: "BCA", imageUrl: "" },
-	{ href: "", name: "", imageUrl: "" },
-	{ href: "", name: "", imageUrl: "" },
-	{ href: "", name: "", imageUrl: "" },
-	{ href: "", name: "", imageUrl: "" },
-	{ href: "/", name: "", imageUrl: "" },
-	{ href: "", name: "", imageUrl: "" },
+	{ href: "/bca", name: "BCA", },
+	
 ];
 
 const HomePage = () => {

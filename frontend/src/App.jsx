@@ -10,10 +10,22 @@ import  LoadingSpinner  from './components/LoadingSpinner'
 import Navbar from './components/Navbar'
 import CreateProductForm from './pages/CreateBooksForm'
 import SemesterBooksPage from './pages/SemesterBookspage'
+import ChatPage from './pages/ChatPage'
+import ProductPage from './pages/ProductPage'
 
 function App() {
 
   const { user, checkAuth, checkingAuth } = useUserStore()
+
+  const book = {
+    name: "The Great Gatsby",
+    image: "https://m.media-amazon.com/images/I/31Ls5B8A4TL._SY445_SX342_.jpg",
+    author: "F. Scott Fitzgerald",
+    department: "Literature",
+    semester: "Fall 2024",
+    condition: "Used - Good",
+    price: "$15",
+  }
 
   useEffect(()=>{
     checkAuth()
@@ -40,6 +52,8 @@ function App() {
         <Route path='/sell' element={<CreateProductForm/>}/>
         <Route path='/:department/' element={<SemesterBooksPage/>}/>
         <Route path='/:department/:semester' element={<SemesterBooksPage/>}/>
+        <Route path='/chat' element={<ChatPage/>}/>
+        <Route path='/pro' element={<ProductPage book={book}/>}/>
       </Routes>
 
    </div>

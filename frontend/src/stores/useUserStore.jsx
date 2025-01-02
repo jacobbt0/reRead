@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
+
 axios.defaults.withCredentials = true
 
 export const useUserStore = create((set, get) => ({
@@ -36,6 +37,17 @@ export const useUserStore = create((set, get) => ({
 		} catch (error) {
 			set({ loading: false })
 			toast.error(error.response.data.message || "An error occurred")
+		}
+	},
+	loginWithGoogle: async (token) =>{
+		set({ loading: true })
+		try {
+			
+			const res = await axios.post(`http://localhost:8888/api/auth/login/google`,{token})
+			set({ user: res.data, loading: false })
+
+		} catch (error) {
+			
 		}
 	},
 

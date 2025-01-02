@@ -9,7 +9,16 @@ const SemesterBooksPage = () => {
 	const { fetchProductsBySemester, products } = useProductStore();
 
 	const { department, semester } = useParams()
-	const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"]
+	const semesters = [
+		{ href: "/1st", name: "1st", },
+		{ href: "/2nd", name: "2nd", },
+		{ href: "/3rd", name: "3rd", },
+		{ href: "/4th", name: "4th", },
+		{ href: "/5th", name: "5th", },
+		{ href: "/6th", name: "6th", },
+		{ href: "/7th", name: "7th", },
+		{ href: "/8th", name: "8th", },
+	]
 
 	useEffect(() => {
 		fetchProductsBySemester(department, semester);
@@ -19,7 +28,7 @@ const SemesterBooksPage = () => {
 	return (
 		<div className='min-h-screen'>
 			
-			<Semester semesters={semesters}/>
+			<Semester semesters={semesters} department={department}/>
 			<div className='relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
 				<motion.h1
 					className='text-center text-4xl sm:text-5xl font-bold text-emerald-400 mb-8'
@@ -27,7 +36,7 @@ const SemesterBooksPage = () => {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
 				>
-					{department.toUpperCase() + " " + semester + " Semester"}
+					{semester ? department.toUpperCase() + " " + semester + " Semester" : ""}
 				</motion.h1>
 
 				<motion.div

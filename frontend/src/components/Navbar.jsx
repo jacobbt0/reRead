@@ -44,8 +44,8 @@ const Navbar = () => {
                         </div>
                         <Link
                             to={"/"}
-                            className='text-gray-300 hover:text-emerald-400 transition duration-300
-					 ease-in-out'
+                            className='bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 
+                            rounded-md flex items-center transition duration-300 ease-in-out'
                         >
                             Home
                         </Link>
@@ -62,7 +62,7 @@ const Navbar = () => {
                                     className='absolute -top-2 right-8  bg-emerald-500 text-white rounded-full px-1.5 py-0.2 
 									text-xs group-hover:bg-emerald-400 transition duration-300 ease-in-out'
                                 >
-                                    3
+                                    
                                 </span>
 
                             </Link>
