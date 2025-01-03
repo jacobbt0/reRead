@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { UserPlus, Mail, Lock, User, ArrowRight, Loader,  } from "lucide-react"
+import { UserPlus, Phone, Lock, User, ArrowRight, Loader,  } from "lucide-react"
 import { motion } from "framer-motion"
 import { useUserStore } from "../stores/useUserStore"
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'
@@ -9,7 +9,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'
 const SignUpPage = () => {
 	const [formData, setFormData] = useState({
 		name: "",
-		email: "",
+		phone: "",
 		password: "",
 		confirmPassword: "",
 
@@ -79,24 +79,24 @@ const SignUpPage = () => {
 						</div>
 
 						<div>
-							<label htmlFor='email' className='block text-sm font-medium text-gray-300'>
-								Email address
+							<label htmlFor='phone' className='block text-sm font-medium text-gray-300'>
+								Phone Number
 							</label>
 							<div className='mt-1 relative rounded-md shadow-sm'>
 								<div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-									<Mail className='h-5 w-5 text-gray-400' aria-hidden='true' />
+									<Phone className='h-5 w-5 text-gray-400' aria-hidden='true' />
 								</div>
 								<input
-									id='email'
-									type='email'
+									id='phone'
+									type='tel'
 									required
-									value={formData.email}
-									onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+									value={formData.phone}
+									onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
 									className=' block w-full px-3 py-2 pl-10 bg-gray-700 border border-gray-600 
 									rounded-md shadow-sm
 									 placeholder-gray-400 focus:outline-none focus:ring-emerald-500 
 									 focus:border-emerald-500 sm:text-sm'
-									placeholder='you@example.com'
+									placeholder='0000000000'
 								/>
 							</div>
 						</div>
@@ -144,7 +144,8 @@ const SignUpPage = () => {
 						</div>
 
 
-						<button
+						<Link
+							to={'/otp'}
 							type='submit'
 							className='w-full flex justify-center py-2 px-4 border border-transparent 
 							rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600
@@ -168,7 +169,7 @@ const SignUpPage = () => {
 									Sign up
 								</>
 							)}
-						</button>
+						</Link>
 
 					</form>
 

@@ -12,6 +12,7 @@ import CreateProductForm from './pages/CreateBooksForm'
 import SemesterBooksPage from './pages/SemesterBookspage'
 import ChatPage from './pages/ChatPage'
 import ProductPage from './pages/ProductPage'
+import OTPVerificationForm from './pages/OTPVerificationForm'
 
 function App() {
 
@@ -54,6 +55,8 @@ function App() {
         <Route path='/:department/:semester' element={<SemesterBooksPage/>}/>
         <Route path='/chat' element={<ChatPage/>}/>
         <Route path='/pro' element={<ProductPage book={book}/>}/>
+        <Route path='/otp' element={<OTPVerificationForm/>}/>
+
       </Routes>
 
    </div>

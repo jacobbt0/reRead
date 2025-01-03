@@ -10,7 +10,7 @@ export const useUserStore = create((set, get) => ({
 	loading: false,
 	checkingAuth: true,
 
-	signup: async ({ name, email, password, confirmPassword }) => {
+	signup: async ({ name, phone, password, confirmPassword }) => {
 		set({ loading: true })
 
 		if (password !== confirmPassword) {
@@ -19,7 +19,7 @@ export const useUserStore = create((set, get) => ({
 		}
 
 		try {
-			const res = await axios.post("http://localhost:8888/api/auth/signup", { name, email, password })
+			const res = await axios.post("http://localhost:8888/api/auth/signup", { name, phone, password })
 			set({ user: res.data, loading: false })
 		} catch (error) {
 			set({ loading: false })
@@ -27,11 +27,11 @@ export const useUserStore = create((set, get) => ({
 		
 		}
 	},
-	login: async (email, password) => {
+	login: async (phone, password) => {
 		set({ loading: true })
 
 		try {
-			const res = await axios.post("http://localhost:8888/api/auth/login", { email, password })
+			const res = await axios.post("http://localhost:8888/api/auth/login", { phone, password })
 
 			set({ user: res.data, loading: false })
 		} catch (error) {

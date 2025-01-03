@@ -1,7 +1,9 @@
 import User from '../models/user.js'
 import jwt from 'jsonwebtoken'
+import twilio from 'twilio'
 
 
+const otps = {}
 const generateTokens = (userId) => {
 	const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
 		expiresIn: "15m",
@@ -29,103 +31,143 @@ const setCookies = (res, accessToken, refreshToken) => {
 	})
 }
 
+export const sendOTP = async (req, res) => {
+	const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
+	const otp = crypto.randomInt(100000, 999999).toString()
+	const { phone } = req.body
+
+	try {
+		await client.messages.create({
+			body: `Your Verification code for REREAD MARKETPLACE: ${otp}`,
+			to: phone,
+		})
+		const hashedOtp = await bcrypt.hash(otp, 10)
+		otps[phone] = { otp: hashedOtp, timestamp: Date.now() }
+		res.status(200).send('OTP sent successfully.')
+	} catch (error) {
+		console.error('Error sending OTP SMS:', error);
+	}
+
+}
+
+export const verifyOTP = async (req, res) => {
+	const { phone, otp } = req.body
+	const storedOtp = otps[phone]
+
+	if (!storedOtp) {
+		return res.status(400).send('OTP not sent or expired.');
+	}
+	if (Date.now() - storedOtp.timestamp > 5 * 60 * 1000) {
+		delete otps[phone]; // OTP expired, delete it
+		return res.status(400).send('OTP expired.');
+	}
+	const isMatch = await bcrypt.compare(otp, storedOtp.otp);
+
+	if (isMatch) {
+		res.status(200).send('OTP verified successfully.');
+	} else {
+		res.status(400).send('Invalid OTP.');
+	}
+}
+
 export const signup = async (req, res) => {
-	
-    const { name, email, password } = req.body
-    try {
-        const userExist = await User.findOne({ email })
-		if(password.length < 6){
+
+	const { name, phone, password } = req.body
+	try {
+		const userExist = await User.findOne({ phone })
+		if (password.length < 6) {
 			return res.status(400).json({ message: "Password must be at least 6 characters long" })
 		}
-        if (userExist) {
-            return res.status(400).json({ message: "User already exists" })
-        }
-        const user = await User.create({ name, email, password })
+		if (userExist) {
+			return res.status(400).json({ message: "User already exists" })
+		}
 
-        const { accessToken, refreshToken } = generateTokens(user._id)
-		
+		const user = await User.create({ name, phone, password })
+
+		const { accessToken, refreshToken } = generateTokens(user._id)
+
 
 		setCookies(res, accessToken, refreshToken)
 
-        res.status(201).json({
-            message: "User created successfully",
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role
-        })
+		res.status(201).json({
+			message: "User created successfully",
+			_id: user._id,
+			name: user.name,
+			phone: user.phone,
+			role: user.role
+		})
 
-    } catch (error) {
-        console.log("Error in signup controller", error.message)
-        res.status(500).json({ message: error.message })
-    }
+	} catch (error) {
+		console.log("Error in signup controller", error.message)
+		res.status(500).json({ message: error.message })
+	}
 }
 
 export const login = async (req, res) => {
-    const { email, password } = req.body
-    try {
-        const user = await User.findOne({ email })
-        if (user && (await user.comparePassword(password))) {
+	const { phone, password } = req.body
+	try {
+		const user = await User.findOne({ phone })
+		if (user && (await user.comparePassword(password))) {
 
-            const { accessToken, refreshToken } = generateTokens(user._id)
-			
+			const { accessToken, refreshToken } = generateTokens(user._id)
+
 			setCookies(res, accessToken, refreshToken)
 
-            res.status(201).json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role
-            })
-        } else {
-            return res.status(400).json({ message: "Invalid email or password" })
-        }
+			res.status(201).json({
+				_id: user._id,
+				name: user.name,
+				phone: user.phone,
+				role: user.role
+			})
+		} else {
+			return res.status(400).json({ message: "Invalid phone or password" })
+		}
 
-    } catch (error) {
-        console.log("Error in login controller", error.message);
-        res.status(500).json({ message: error.message });
-    }
+	} catch (error) {
+		console.log("Error in login controller", error.message);
+		res.status(500).json({ message: error.message });
+	}
 }
 
-export const loginWithGoogle = async (req,res) =>{
-	
+export const loginWithGoogle = async (req, res) => {
+
 	const { token } = req.body
 	const name = jwt.decode(token).name
-	const email = jwt.decode(token).email
-	
-	
+	const phone = jwt.decode(token).phone
+
+
 	try {
-		const user = await User.findOne({ email })
-	if(user){
-		const { accessToken, refreshToken } = generateTokens(user._id)
-			
+		const user = await User.findOne({ phone })
+		if (user) {
+			const { accessToken, refreshToken } = generateTokens(user._id)
+
 			setCookies(res, accessToken, refreshToken)
 
-            res.status(201).json({
-                _id: user._id, 
-                name: user.name,
-                email: user.email,
-                role: user.role
-            })
-	}else{
-		const user = await User.create({ name, email })
-		
-        const { accessToken, refreshToken } = generateTokens(user._id)
-		
-		setCookies(res, accessToken, refreshToken)
+			res.status(201).json({
+				_id: user._id,
+				name: user.name,
+				phone: user.phone,
+				role: user.role
+			})
+		} else {
+			const user = await User.create({ name, phone })
 
-        res.status(201).json({
-            message: "User created successfully",
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role
-        })
+			const { accessToken, refreshToken } = generateTokens(user._id)
 
-	}
+			setCookies(res, accessToken, refreshToken)
+
+			res.status(201).json({
+				message: "User created successfully",
+				_id: user._id,
+				name: user.name,
+				phone: user.phone,
+				role: user.role
+			})
+
+		}
 	} catch (error) {
 		console.log("Error in loginWithGoogle controller", error.message);
-        res.status(500).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 }
 
@@ -134,7 +176,7 @@ export const logout = async (req, res) => {
 		const refreshToken = req.cookies.refreshToken;
 		if (refreshToken) {
 			const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-			
+
 		}
 
 		res.clearCookie("accessToken");
