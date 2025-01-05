@@ -6,7 +6,7 @@ import { useProductStore } from "../stores/useProductStore";
 const departments = ["BCA",]
 const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"]
 
-const CreateProductForm = () => {
+const CreateBookForm = () => {
 	const [newProduct, setNewProduct] = useState({
 		title: "",
 		price: "",
@@ -183,4 +183,4 @@ const CreateProductForm = () => {
 		</motion.div>
 	);
 };
-export default CreateProductForm
+export default CreateBookForm

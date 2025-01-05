@@ -8,7 +8,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'
 
 
 const LoginPage = () => {
-	const [phone, setPhone] = useState("");
+	const [phone, setPhone] = useState("+91");
 	const [password, setPassword] = useState("")
 	const { login, loading, loginWithGoogle } = useUserStore()
 	const clientId = "770439825399-vf9io9g7viclfnqquriom5i2o8fvrrt3.apps.googleusercontent.com"

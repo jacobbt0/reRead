@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
-const OTPVerificationForm = () => {
+
+const OTPVerificationForm = ({sendData}) => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
   // Function to handle changes in the input fields
@@ -21,7 +22,9 @@ const OTPVerificationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const otpValue = otp.join("");
-    alert(`OTP Submitted: ${otpValue}`); // Replace with actual OTP verification logic
+    sendData(otpValue)
+    setOtp(["", "", "", "", "", ""])
+    
   };
 
   // Function to determine text color based on input value
@@ -30,7 +33,7 @@ const OTPVerificationForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-700 flex justify-center items-center">
+  <div className="flex justify-center items-center h-screen">
       <div className="bg-white p-8 rounded-lg shadow-xl w-125 ">
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
           OTP Verification

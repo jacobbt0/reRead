@@ -1,7 +1,8 @@
 import User from '../models/user.js'
 import jwt from 'jsonwebtoken'
 import twilio from 'twilio'
-
+import crypto from 'crypto' 
+import bcrypt from 'bcrypt'
 
 const otps = {}
 const generateTokens = (userId) => {
@@ -35,25 +36,28 @@ export const sendOTP = async (req, res) => {
 	const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
 	const otp = crypto.randomInt(100000, 999999).toString()
 	const { phone } = req.body
-
-	try {
+	console.log(phone)
+	try {  
 		await client.messages.create({
 			body: `Your Verification code for REREAD MARKETPLACE: ${otp}`,
-			to: phone,
-		})
+			from: '+12313104187',
+			to: phone 
+			 
+		}) 
 		const hashedOtp = await bcrypt.hash(otp, 10)
 		otps[phone] = { otp: hashedOtp, timestamp: Date.now() }
 		res.status(200).send('OTP sent successfully.')
 	} catch (error) {
 		console.error('Error sending OTP SMS:', error);
-	}
+	} 
+
 
 }
 
 export const verifyOTP = async (req, res) => {
 	const { phone, otp } = req.body
 	const storedOtp = otps[phone]
-
+	console.log(otps) 
 	if (!storedOtp) {
 		return res.status(400).send('OTP not sent or expired.');
 	}
@@ -61,6 +65,7 @@ export const verifyOTP = async (req, res) => {
 		delete otps[phone]; // OTP expired, delete it
 		return res.status(400).send('OTP expired.');
 	}
+	
 	const isMatch = await bcrypt.compare(otp, storedOtp.otp);
 
 	if (isMatch) {
@@ -69,15 +74,13 @@ export const verifyOTP = async (req, res) => {
 		res.status(400).send('Invalid OTP.');
 	}
 }
-
+ 
 export const signup = async (req, res) => {
 
 	const { name, phone, password } = req.body
 	try {
 		const userExist = await User.findOne({ phone })
-		if (password.length < 6) {
-			return res.status(400).json({ message: "Password must be at least 6 characters long" })
-		}
+	
 		if (userExist) {
 			return res.status(400).json({ message: "User already exists" })
 		}

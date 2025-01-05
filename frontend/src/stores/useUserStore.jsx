@@ -10,13 +10,8 @@ export const useUserStore = create((set, get) => ({
 	loading: false,
 	checkingAuth: true,
 
-	signup: async ({ name, phone, password, confirmPassword }) => {
+	signup: async ({ name, phone, password, }) => {
 		set({ loading: true })
-
-		if (password !== confirmPassword) {
-			set({ loading: false })
-			return toast.error("Passwords do not match")
-		}
 
 		try {
 			const res = await axios.post("http://localhost:8888/api/auth/signup", { name, phone, password })
@@ -32,8 +27,8 @@ export const useUserStore = create((set, get) => ({
 
 		try {
 			const res = await axios.post("http://localhost:8888/api/auth/login", { phone, password })
-
 			set({ user: res.data, loading: false })
+			
 		} catch (error) {
 			set({ loading: false })
 			toast.error(error.response.data.message || "An error occurred")
@@ -47,7 +42,8 @@ export const useUserStore = create((set, get) => ({
 			set({ user: res.data, loading: false })
 
 		} catch (error) {
-			
+			set({ loading: false })
+			toast.error(error.response.data.message || "An error occurred")
 		}
 	},
 

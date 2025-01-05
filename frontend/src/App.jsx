@@ -4,29 +4,21 @@ import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useUserStore } from './stores/useUserStore'
 import  LoadingSpinner  from './components/LoadingSpinner'
 import Navbar from './components/Navbar'
-import CreateProductForm from './pages/CreateBooksForm'
+import CreateBookForm from './pages/CreateBookForm'
 import SemesterBooksPage from './pages/SemesterBookspage'
 import ChatPage from './pages/ChatPage'
 import ProductPage from './pages/ProductPage'
-import OTPVerificationForm from './pages/OTPVerificationForm'
+import OTPVerificationForm from './components/OTPVerificationForm'
 
 function App() {
 
   const { user, checkAuth, checkingAuth } = useUserStore()
 
-  const book = {
-    name: "The Great Gatsby",
-    image: "https://m.media-amazon.com/images/I/31Ls5B8A4TL._SY445_SX342_.jpg",
-    author: "F. Scott Fitzgerald",
-    department: "Literature",
-    semester: "Fall 2024",
-    condition: "Used - Good",
-    price: "$15",
-  }
+ 
 
   useEffect(()=>{
     checkAuth()
@@ -50,12 +42,13 @@ function App() {
         <Route path='/login' element={!user ? <LoginPage/> : <Navigate to="/"/>}/>
         <Route path='/signup' element={!user ? <SignUpPage/> : <Navigate to="/"/>}/>
         <Route path='/admin' element={<AdminPage/>} />
-        <Route path='/sell' element={<CreateProductForm/>}/>
+        <Route path='/sell' element={user ? <CreateBookForm/> : <Navigate to="/"/>}/>
         <Route path='/:department/' element={<SemesterBooksPage/>}/>
         <Route path='/:department/:semester' element={<SemesterBooksPage/>}/>
-        <Route path='/chat' element={<ChatPage/>}/>
-        <Route path='/pro' element={<ProductPage book={book}/>}/>
+        <Route path='/chat' element={ <ChatPage/> }/>
+        <Route path='/pro' element={<ProductPage />}/>
         <Route path='/otp' element={<OTPVerificationForm/>}/>
+  
 
       </Routes>
 
