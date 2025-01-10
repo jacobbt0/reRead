@@ -22,6 +22,7 @@ const SignUpPage = () => {
 	const [otpSend, setOtpSend] = useState(false);
 	const [otpVerified, setOtpVerified] = useState(false)
 	const { signup, loading, loginWithGoogle } = useUserStore()
+
 	const clientId = "770439825399-vf9io9g7viclfnqquriom5i2o8fvrrt3.apps.googleusercontent.com"
 
 
@@ -62,7 +63,7 @@ const SignUpPage = () => {
 	const handleLoginSuccess = (response) => {
 		console.log('Login Success:', response);
 
-		const token = response.credential
+		const token = response.credential 
 		loginWithGoogle(token)
 
 	}

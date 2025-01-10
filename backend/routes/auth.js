@@ -7,7 +7,8 @@ import {
     getProfile,
     loginWithGoogle,
     sendOTP,
-    verifyOTP
+    verifyOTP,
+
 } from '../controllers/auth.js'
 import { protectRoute } from '../middleware/middleware.js'
 const router = express.Router()

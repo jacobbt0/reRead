@@ -2,11 +2,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Upload, Loader,  } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
+import { useUserStore } from "../stores/useUserStore";
 
 const departments = ["BCA",]
 const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"]
 
 const CreateBookForm = () => {
+	const { user } = useUserStore()
 	const [newProduct, setNewProduct] = useState({
 		title: "",
 		price: "",
@@ -14,6 +16,7 @@ const CreateBookForm = () => {
 		semester: "",
 		bookImage: "",
 		author:"",
+		sellerId: user._id,
 	});
 
 	const { createProduct, loading } = useProductStore();
@@ -21,6 +24,7 @@ const CreateBookForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			console.log(newProduct)
 			await createProduct(newProduct)
 			setNewProduct({ title: "", department: "", price: "", semester: "", bookImage: "", author: "", });
 		} catch {

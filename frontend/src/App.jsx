@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import HomePage from './pages/HomePage'
 import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
@@ -16,9 +16,11 @@ import OTPVerificationForm from './components/OTPVerificationForm'
 
 function App() {
 
-  const { user, checkAuth, checkingAuth } = useUserStore()
+  const { user, checkAuth, checkingAuth, refreshToken } = useUserStore()
 
- 
+  useEffect(()=>{
+    refreshToken()
+  },[])
 
   useEffect(()=>{
     checkAuth()
@@ -45,13 +47,11 @@ function App() {
         <Route path='/sell' element={user ? <CreateBookForm/> : <Navigate to="/"/>}/>
         <Route path='/:department/' element={<SemesterBooksPage/>}/>
         <Route path='/:department/:semester' element={<SemesterBooksPage/>}/>
-        <Route path='/chat' element={ <ChatPage/> }/>
-        <Route path='/pro' element={<ProductPage />}/>
+        <Route path='/chat/:id' element={ <ChatPage/> }/>
         <Route path='/otp' element={<OTPVerificationForm/>}/>
-  
 
-      </Routes>
-
+      </Routes> 
+      
    </div>
    <Toaster/>
    </div>

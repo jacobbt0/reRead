@@ -24,10 +24,7 @@ const ProductPage = ({book}) => {
               <span className="font-medium">Semester:</span>
               <span>{book.semester}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="font-medium">Condition:</span>
-              <span>{book.condition}</span>
-            </div>
+            
             <div className="flex justify-between">
               <span className="font-medium">Price:</span>
               <span className="text-emerald-600 text-2xl font-bold">{book.price}</span>

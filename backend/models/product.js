@@ -27,6 +27,11 @@ const bookSchema = new mongoose.Schema(
         author: {
             type: String,
         },
+        sellerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
         createdAt: {
             type: Date,
             default: Date.now,

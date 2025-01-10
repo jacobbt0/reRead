@@ -52,6 +52,7 @@ const SemesterBooksPage = () => {
 					)}
 
 					{products?.map((product) => (
+						
 						<ProductCard key={product._id} product={product} />
 					))}
 				</motion.div>

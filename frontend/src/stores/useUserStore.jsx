@@ -1,14 +1,18 @@
 import { create } from "zustand";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { io } from "socket.io-client"
 
 
 axios.defaults.withCredentials = true
+
+const BASE_URL = "http://localhost:8888"
 
 export const useUserStore = create((set, get) => ({
 	user: null,
 	loading: false,
 	checkingAuth: true,
+	socket: null,
 
 	signup: async ({ name, phone, password, }) => {
 		set({ loading: true })
@@ -18,8 +22,8 @@ export const useUserStore = create((set, get) => ({
 			set({ user: res.data, loading: false })
 		} catch (error) {
 			set({ loading: false })
-			toast.error( error.response.data.message ||"An error occurred")
-		
+			toast.error(error.response.data.message || "An error occurred")
+
 		}
 	},
 	login: async (phone, password) => {
@@ -28,17 +32,17 @@ export const useUserStore = create((set, get) => ({
 		try {
 			const res = await axios.post("http://localhost:8888/api/auth/login", { phone, password })
 			set({ user: res.data, loading: false })
-			
+
 		} catch (error) {
 			set({ loading: false })
 			toast.error(error.response.data.message || "An error occurred")
 		}
 	},
-	loginWithGoogle: async (token) =>{
+	loginWithGoogle: async (token) => {
 		set({ loading: true })
 		try {
-			
-			const res = await axios.post(`http://localhost:8888/api/auth/login/google`,{token})
+
+			const res = await axios.post(`http://localhost:8888/api/auth/login/google`, { token })
 			set({ user: res.data, loading: false })
 
 		} catch (error) {
@@ -61,7 +65,7 @@ export const useUserStore = create((set, get) => ({
 		try {
 			const response = await axios.get("http://localhost:8888/api/auth/profile")
 			set({ user: response.data, checkingAuth: false })
-			
+
 		} catch (error) {
 			console.log(error.message)
 			set({ checkingAuth: false, user: null })
@@ -82,6 +86,26 @@ export const useUserStore = create((set, get) => ({
 			throw error
 		}
 	},
+
+	connectSocket: async () => {
+		const { user } = get()
+		if (user || get().socket?.connected) return
+
+		const socket = io(BASE_URL, {
+			query: {
+				userId: user._id,
+			},
+		})
+
+		socket.connect()
+		set({ socket: socket })
+
+	},
+
+	disconnectSocket: async () =>{
+		if(get().socket?.connected) get().socket.disconnect()
+	}
+
 }));
 
 

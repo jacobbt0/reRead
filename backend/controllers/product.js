@@ -2,6 +2,8 @@ import Product from "../models/product.js"
 import cloudinary from "../lib/cloudinary.js"
 import cron from "node-cron"
 
+
+
 export const getAllBooks = async (req, res) => {
     try {
         const books = await Product.find({})
@@ -11,12 +13,12 @@ export const getAllBooks = async (req, res) => {
         res.status(500).json({ message: "server error" })
     }
 }
-
+  
 export const createBook = async (req, res) => {
     try {
        
-
-        const { title, price, department, semester, bookImage, author } = req.body
+       
+        const { title, price, department, semester, bookImage, author, sellerId} = req.body
         let cloudinaryResponse = null
 
         if(bookImage){
@@ -30,6 +32,7 @@ export const createBook = async (req, res) => {
             author,
             department,
             semester,
+            sellerId,
 
 
         })
@@ -83,6 +86,10 @@ export const getBooksBySemester = async (req, res) => {
     }
 
 } 
+
+
+
+
 
 cron.schedule("0 0 * * *", async () => {  // Runs every day at midnight
     try {

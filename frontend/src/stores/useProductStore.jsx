@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "axios";
+ 
 
 export const useProductStore = create((set) => ({
 	products: [],
@@ -20,6 +21,7 @@ export const useProductStore = create((set) => ({
 			set({ loading: false });
 		}
 	},
+	
 	fetchAllProducts: async () => {
 		set({ loading: true });
 		try {

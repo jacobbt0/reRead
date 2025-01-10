@@ -1,12 +1,17 @@
 import { MessageCircle } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
+import { useChatStore } from "../stores/useChatStore";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
 	const { user } = useUserStore();
+	const { setSelectedUser, selectedUser} = useChatStore()
 const loginError = () =>{
 	if(!user) 	return toast.error("Login to chat")
+		setSelectedUser(product.sellerId)
+		
+		
 }
 	return (
 
@@ -29,8 +34,7 @@ const loginError = () =>{
 					<h5 className='text-sm font-semibold tracking-tight text-white mt-1 mb-1'>{product.semester}</h5>
 				
 					<Link
-						to={ user ? "/chat" : "" 
-						}
+						to={"/chat/"+product.sellerId}
 						onClick={
 							loginError
 							}
