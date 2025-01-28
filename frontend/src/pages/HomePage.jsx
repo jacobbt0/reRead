@@ -1,14 +1,15 @@
 import { useEffect } from "react";
-import Department  from "../components/Department";
+import Department from "../components/Department";
+import { useChatStore } from "../stores/useChatStore";
 
 
 const departments = [
 	{ href: "/bca", name: "BCA", },
-	
+
 ];
 
 const HomePage = () => {
-
+	const { selectedUser } = useChatStore();
 
 	return (
 		<div className='relative min-h-screen text-white overflow-hidden'>
@@ -16,7 +17,7 @@ const HomePage = () => {
 				<h1 className='text-center text-5xl sm:text-6xl font-bold text-emerald-400 mb-8'>
 					Select Your Department
 				</h1>
-			
+
 
 				<div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8'>
 					{departments.map((department) => (
@@ -24,9 +25,10 @@ const HomePage = () => {
 					))}
 				</div>
 
-		
+
 			</div>
-			
+
+
 		</div>
 	);
 };

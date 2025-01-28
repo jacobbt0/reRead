@@ -4,6 +4,7 @@ import {
     createBook,
     deleteBook,
     getBooksBySemester,
+    getAccount,
   
 } from '../controllers/product.js'
 import { protectRoute, adminRoute } from '../middleware/middleware.js'
@@ -14,6 +15,6 @@ router.get('/',protectRoute, adminRoute, getAllBooks)
 router.post('/',protectRoute, createBook )
 router.delete('/:id',protectRoute, deleteBook)
 router.get('/:department/:semester', getBooksBySemester)
-
+router.get("/:id",protectRoute, getAccount)
  
 export default router

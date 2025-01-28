@@ -3,16 +3,26 @@ import { useUserStore } from "../stores/useUserStore";
 import { useChatStore } from "../stores/useChatStore";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const ProductCard = ({ product }) => {
 	const { user } = useUserStore();
-	const { setSelectedUser, selectedUser} = useChatStore()
-const loginError = () =>{
-	if(!user) 	return toast.error("Login to chat")
+	const { setSelectedUser,selectedUser } = useChatStore()
+	
+
+	const loginError = () =>{
+		if(!user) 	return toast.error("Login to chat")
+			
+			setSelectedUser(product.sellerId)
+		
+	}
+	
+useEffect(()=>{
+	if(user){
 		setSelectedUser(product.sellerId)
-		
-		
-}
+	}
+},[selectedUser])
+
 	return (
 
 		<div className='flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg cursor-pointer'>
@@ -38,6 +48,7 @@ const loginError = () =>{
 						onClick={
 							loginError
 							}
+						
 						
 						className='flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-center text-sm font-medium
 					 text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300 mt-2 '

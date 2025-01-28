@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import axios from "axios";
+import { axiosInstance } from "../lib/axios.js"
 import { toast } from "react-hot-toast";
 import { io } from "socket.io-client"
 
 
-axios.defaults.withCredentials = true
+
 
 const BASE_URL = "http://localhost:8888"
 
@@ -12,14 +12,16 @@ export const useUserStore = create((set, get) => ({
 	user: null,
 	loading: false,
 	checkingAuth: true,
+	onlineUsers: [],
 	socket: null,
 
 	signup: async ({ name, phone, password, }) => {
 		set({ loading: true })
 
 		try {
-			const res = await axios.post("http://localhost:8888/api/auth/signup", { name, phone, password })
+			const res = await axiosInstance.post("/auth/signup", { name, phone, password })
 			set({ user: res.data, loading: false })
+			get().connectSocket()
 		} catch (error) {
 			set({ loading: false })
 			toast.error(error.response.data.message || "An error occurred")
@@ -30,9 +32,9 @@ export const useUserStore = create((set, get) => ({
 		set({ loading: true })
 
 		try {
-			const res = await axios.post("http://localhost:8888/api/auth/login", { phone, password })
+			const res = await axiosInstance.post("/auth/login", { phone, password })
 			set({ user: res.data, loading: false })
-
+			get().connectSocket()
 		} catch (error) {
 			set({ loading: false })
 			toast.error(error.response.data.message || "An error occurred")
@@ -42,8 +44,9 @@ export const useUserStore = create((set, get) => ({
 		set({ loading: true })
 		try {
 
-			const res = await axios.post(`http://localhost:8888/api/auth/login/google`, { token })
+			const res = await axiosInstance.post(`/auth/login/google`, { token })
 			set({ user: res.data, loading: false })
+			get().connectSocket()
 
 		} catch (error) {
 			set({ loading: false })
@@ -53,7 +56,7 @@ export const useUserStore = create((set, get) => ({
 
 	logout: async () => {
 		try {
-			await axios.post("http://localhost:8888/api/auth/logout")
+			await axiosInstance.post("/auth/logout")
 			set({ user: null })
 		} catch (error) {
 			toast.error(error.response?.data?.message || "An error occurred during logout")
@@ -63,11 +66,11 @@ export const useUserStore = create((set, get) => ({
 	checkAuth: async () => {
 		set({ checkingAuth: true });
 		try {
-			const response = await axios.get("http://localhost:8888/api/auth/profile")
+			const response = await axiosInstance.get("/auth/profile")
 			set({ user: response.data, checkingAuth: false })
-
+			get().connectSocket()
 		} catch (error) {
-			console.log(error.message)
+			console.log(error)
 			set({ checkingAuth: false, user: null })
 		}
 	},
@@ -78,7 +81,7 @@ export const useUserStore = create((set, get) => ({
 
 		set({ checkingAuth: true })
 		try {
-			const response = await axios.post("http://localhost:8888/api/auth/refresh-token");
+			const response = await axiosInstance.post("/auth/refresh-token");
 			set({ checkingAuth: false })
 			return response.data
 		} catch (error) {
@@ -87,25 +90,26 @@ export const useUserStore = create((set, get) => ({
 		}
 	},
 
-	connectSocket: async () => {
-		const { user } = get()
-		if (user || get().socket?.connected) return
+	connectSocket: () => {
+		const { user } = get();
+		if (!user || get().socket?.connected) return;
 
 		const socket = io(BASE_URL, {
 			query: {
 				userId: user._id,
 			},
-		})
+		});
+		socket.connect();
 
-		socket.connect()
-		set({ socket: socket })
+		set({ socket: socket });
 
+		socket.on("getOnlineUsers", (userIds) => {
+			set({ onlineUsers: userIds });
+		});
 	},
-
-	disconnectSocket: async () =>{
-		if(get().socket?.connected) get().socket.disconnect()
-	}
-
+	disconnectSocket: () => {
+		if (get().socket?.connected) get().socket.disconnect();
+	},
 }));
 
 
@@ -113,7 +117,7 @@ export const useUserStore = create((set, get) => ({
 // Axios interceptor for token refresh
 let refreshPromise = null
 
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
 	(response) => response,
 	async (error) => {
 		const originalRequest = error.config
@@ -124,7 +128,7 @@ axios.interceptors.response.use(
 				// If a refresh is already in progress, wait for it to complete
 				if (refreshPromise) {
 					await refreshPromise
-					return axios(originalRequest)
+					return axiosInstance(originalRequest)
 				}
 
 				// Start a new refresh process
@@ -132,7 +136,7 @@ axios.interceptors.response.use(
 				await refreshPromise
 				refreshPromise = null
 
-				return axios(originalRequest);
+				return axiosInstance(originalRequest);
 			} catch (refreshError) {
 				// If refresh fails, redirect to login or handle as needed
 				useUserStore.getState().logout()

@@ -24,6 +24,7 @@ const CreateBookForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			console.log(user)
 			console.log(newProduct)
 			await createProduct(newProduct)
 			setNewProduct({ title: "", department: "", price: "", semester: "", bookImage: "", author: "", });

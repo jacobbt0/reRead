@@ -13,21 +13,24 @@ import { connectDB } from './lib/db.js'
 import { app, server } from './lib/socket.js'
 const PORT = process.env.PORT || 8888
 
+
 app.use(
   cors({
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,  // Allow sending cookies
   })
-)
+) 
 app.use(express.json({ limit: "10mb" }))
 app.use(cookieParser())
 
-const __dirname = path.resolve()
 
+ 
 app.use('/api/auth', authRoutes)
 app.use('/api/books', productRoutes)
-app.use('/api/message', messageRoutes)
+app.use('/api/messages', messageRoutes)
+
+
 
 server.listen(PORT, () => {
   console.log('listening on port', PORT)

@@ -1,17 +1,17 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
-import axios from "axios";
- 
+import { axiosInstance } from "../lib/axios.js"
+import { useUserStore } from "./useUserStore"
 
-export const useProductStore = create((set) => ({
+export const useProductStore = create((set, get) => ({
 	products: [],
 	loading: false,
-
+	myProducts: [],
 	setProducts: (products) => set({ products }),
 	createProduct: async (productData) => {
 		set({ loading: true });
 		try {
-			const res = await axios.post("http://localhost:8888/api/books", productData);
+			const res = await axiosInstance.post("/books", productData);
 			set((prevState) => ({
 				products: [...prevState.products, res.data],
 				loading: false,
@@ -21,11 +21,11 @@ export const useProductStore = create((set) => ({
 			set({ loading: false });
 		}
 	},
-	
+
 	fetchAllProducts: async () => {
 		set({ loading: true });
 		try {
-			const response = await axios.get("http://localhost:8888/api/books");
+			const response = await axiosInstance.get("/books");
 			set({ products: response.data.products, loading: false });
 		} catch (error) {
 			set({ error: "Failed to fetch products", loading: false });
@@ -35,8 +35,8 @@ export const useProductStore = create((set) => ({
 	fetchProductsBySemester: async (department, semester) => {
 		set({ loading: true });
 		try {
-			const response = await axios.get(`http://localhost:8888/api/books/${department}/${semester}`)
-			
+			const response = await axiosInstance.get(`/books/${department}/${semester}`)
+
 			set({ products: response.data, loading: false });
 		} catch (error) {
 			set({ error: "Failed to fetch products", loading: false });
@@ -46,7 +46,7 @@ export const useProductStore = create((set) => ({
 	deleteProduct: async (productId) => {
 		set({ loading: true });
 		try {
-			await axios.delete(`http://localhost:8888/api/books/${productId}`);
+			await axiosInstance.delete(`/books/${productId}`)
 			set((prevProducts) => ({
 				products: prevProducts.products.filter((product) => product._id !== productId),
 				loading: false,
@@ -56,5 +56,18 @@ export const useProductStore = create((set) => ({
 			toast.error(error.response.data.error || "Failed to delete product");
 		}
 	},
+
+	fetchAccountData: async () => {
+		try {
+
+			const userId = useUserStore.getState().user
+			const response = await axiosInstance.get(`/books/${userId._id}`)
+			set({ myProducts: response.data })
+
+			// setChats(res.data.chats);
+		} catch (err) {
+			console.error('Error fetching account data', err);
+		}
+	}
 
 }))

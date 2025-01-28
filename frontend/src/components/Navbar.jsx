@@ -1,4 +1,4 @@
-import { ShoppingCart, UserPlus, LogIn, LogOut, Lock, Plus } from "lucide-react";
+import { User, UserPlus, LogIn, LogOut, Lock, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../stores/useUserStore";
 import toast from "react-hot-toast";
@@ -55,12 +55,12 @@ const Navbar = () => {
                         </Link>
                         {user && (
                             <Link
-                                to={"/cart"}
+                                to={"/account"}
                                 className='relative group text-gray-300 hover:text-emerald-400 transition duration-300 
 							ease-in-out'
                             >
-                                <ShoppingCart className='inline-block mr-1 group-hover:text-emerald-400' size={25} />
-                                <span className='hidden sm:inline'>Cart</span>
+                                <User className='inline-block mr-1 group-hover:text-emerald-400' size={25} />
+                                <span className='hidden sm:inline'>Account</span>
 
                                 <span
                                     className='absolute -top-2 right-8  bg-emerald-500 text-white rounded-full px-1.5 py-0.2 

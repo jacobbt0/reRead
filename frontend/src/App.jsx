@@ -4,7 +4,7 @@ import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useUserStore } from './stores/useUserStore'
 import  LoadingSpinner  from './components/LoadingSpinner'
 import Navbar from './components/Navbar'
@@ -12,24 +12,28 @@ import CreateBookForm from './pages/CreateBookForm'
 import SemesterBooksPage from './pages/SemesterBookspage'
 import ChatPage from './pages/ChatPage'
 import ProductPage from './pages/ProductPage'
+import ProfilePage from './pages/ProfilePage'
 import OTPVerificationForm from './components/OTPVerificationForm'
+import AccountPage from './pages/AccountPage'
 
 function App() {
 
   const { user, checkAuth, checkingAuth, refreshToken } = useUserStore()
+  
+  useEffect(()=>{
+    checkAuth()
+  },[checkAuth])
+
 
   useEffect(()=>{
     refreshToken()
   },[])
 
-  useEffect(()=>{
-    checkAuth()
-  },[checkAuth])
-
+ 
   if (checkingAuth) return <LoadingSpinner />
 
   return (
-    <div className='min-h-screen  bg-gray-900 text-white relative overflow-hidden'>
+    <div className='min-h-screen  bg-gray-900 text-white relative overflow-hidden' data-theme={"coffe"}>
     {/* Background gradient */}
     <div className='absolute inset-0 overflow-hidden'>
       <div className='absolute inset-0'>
@@ -47,9 +51,10 @@ function App() {
         <Route path='/sell' element={user ? <CreateBookForm/> : <Navigate to="/"/>}/>
         <Route path='/:department/' element={<SemesterBooksPage/>}/>
         <Route path='/:department/:semester' element={<SemesterBooksPage/>}/>
-        <Route path='/chat/:id' element={ <ChatPage/> }/>
+        <Route path='/chat' element={ <ChatPage/> }/>
         <Route path='/otp' element={<OTPVerificationForm/>}/>
-
+        <Route path='/account' element={<AccountPage/>} />
+        <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
       </Routes> 
       
    </div>

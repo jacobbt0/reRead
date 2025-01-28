@@ -72,6 +72,18 @@ export const deleteBook = async (req, res) => {
 	}
 }
 
+export const getAccount = async (req,res) => {
+    const { id} = req.params
+  
+    try { 
+        const book = await Product.find({ sellerId: id })
+        res.json(book)
+    } catch (error) {
+        console.log("Error in getAccount controller", error.message)
+        res.status(500).json({message:"Server error"}) 
+    }
+}
+
 export const getBooksBySemester = async (req, res) => {
     const {department, semester} = req.params
     
@@ -86,7 +98,6 @@ export const getBooksBySemester = async (req, res) => {
     }
 
 } 
-
 
 
 
