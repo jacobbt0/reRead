@@ -14,23 +14,24 @@ export const useChatStore = create((set, get) => ({
        
         try {
           const res = await axiosInstance.get("/messages/users");
-         // console.log(res.data)
+        
           set({ users: res.data });
         } catch (error) {
           toast.error(error.response.data.message);
         } 
-      },
+      }, 
 
     getMessages: async (userId) => {
-       
+     
+    
         set({ isMessageLoading: true })
         
         try {
             const res = await axiosInstance.get(`/messages/${userId}`)
-            console.log(res.data)
+         
             set({ messages: res.data, isMessageLoading: false })
         } catch (error) {
-            toast.error(error.response.data.message)
+            console.error(error)
         }
     },    
  

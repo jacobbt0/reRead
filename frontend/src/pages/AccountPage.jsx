@@ -6,7 +6,7 @@ import MyBooks from '../components/MyBooks';
 const AccountPage = () => {
 
     const { fetchAccountData, myProducts } = useProductStore()
-    console.log(myProducts)
+
 
     useEffect(()=>{
         fetchAccountData()
@@ -22,8 +22,10 @@ const AccountPage = () => {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8, delay: 0.2 }}
 				>
-          {myProducts.map((product) => (
-            <MyBooks product={product}/>
+          {myProducts.map((product,i) => (
+          
+              <MyBooks key={i} product={product} />
+           
           ))}
         </motion.div>
       

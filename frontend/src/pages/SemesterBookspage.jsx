@@ -7,7 +7,9 @@ import Semester from "../components/Semester";
 
 const SemesterBooksPage = () => {
 	const { fetchProductsBySemester, products } = useProductStore();
-
+	const { setBook , book} = useProductStore()
+	
+	
 	const { department, semester } = useParams()
 	const semesters = [
 		{ href: "/1st", name: "1st", },
@@ -23,7 +25,7 @@ const SemesterBooksPage = () => {
 	useEffect(() => {
 		fetchProductsBySemester(department, semester);
 	}, [fetchProductsBySemester, semester, department]);
-
+	
 
 	return (
 		<div className='min-h-screen'>
@@ -53,7 +55,13 @@ const SemesterBooksPage = () => {
 
 					{products?.map((product) => (
 						
-						<ProductCard key={product._id} product={product} />
+							<ProductCard 
+						key={product._id} 
+						product={product} 
+						
+						/>
+				
+						
 					))}
 				</motion.div>
 			</div>

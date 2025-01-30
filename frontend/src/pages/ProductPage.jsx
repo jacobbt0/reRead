@@ -7,7 +7,7 @@ const ProductPage = ({book}) => {
       <div className="flex flex-col lg:flex-row items-center p-8 space-y-6 lg:space-y-0 lg:space-x-8">
         <div className="w-full h-full">
           <img
-            src={book.image}
+            src={book.bookImage}
             alt={book.name}
             className="w-full h-80 object-cover rounded-lg shadow-lg transform transition-transform duration-500 hover:scale-105"
           />

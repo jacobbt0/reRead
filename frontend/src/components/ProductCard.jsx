@@ -1,32 +1,26 @@
 import { MessageCircle } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
-import { useChatStore } from "../stores/useChatStore";
+import { useProductStore } from "../stores/useProductStore";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 
+
+
 const ProductCard = ({ product }) => {
 	const { user } = useUserStore();
-	const { setSelectedUser,selectedUser } = useChatStore()
 	
-
-	const loginError = () =>{
+	
+	const loginError = async () =>{
 		if(!user) 	return toast.error("Login to chat")
 			
-			setSelectedUser(product.sellerId)
-		
 	}
-	
-useEffect(()=>{
-	if(user){
-		setSelectedUser(product.sellerId)
-	}
-},[selectedUser])
 
+	
 	return (
 
 		<div className='flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg cursor-pointer'>
-			<Link to={"/pro"}>
+			
 				<div className='relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl'>
 					<img className='object-cover w-full' src={product.bookImage} alt='product image' />
 					<div className='absolute inset-0 bg-black bg-opacity-20' />
@@ -44,7 +38,7 @@ useEffect(()=>{
 					<h5 className='text-sm font-semibold tracking-tight text-white mt-1 mb-1'>{product.semester}</h5>
 				
 					<Link
-						to={"/chat/"+product.sellerId}
+						to={"/chat"} 
 						onClick={
 							loginError
 							}
@@ -60,8 +54,7 @@ useEffect(()=>{
 
 					</Link>
 					</div>
-				
-			</Link>
+			
 		</div>
 
 	);

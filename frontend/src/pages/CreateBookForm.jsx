@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { PlusCircle, Upload, Loader,  } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
 import { useUserStore } from "../stores/useUserStore";
+import { toast } from "react-hot-toast"
 
 const departments = ["BCA",]
 const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"]
@@ -24,12 +25,12 @@ const CreateBookForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			console.log(user)
-			console.log(newProduct)
+			
 			await createProduct(newProduct)
-			setNewProduct({ title: "", department: "", price: "", semester: "", bookImage: "", author: "", });
+			setNewProduct({ title: "", department: "", price: "", semester: "", bookImage: "", author: "", sellerId: user._id })
+			return toast.success("Book added successfully")
 		} catch {
-			console.log("error creating a product");
+			return toast.error("Can't add book");
 		}
 	};
 

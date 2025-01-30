@@ -1,5 +1,5 @@
 const MyBooks = ({ product }) => {
-    console.log(product)
+ 
   return (
     <div className="flex px-4 py-4 w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg cursor-pointer">
     

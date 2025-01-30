@@ -4,10 +4,12 @@ import { axiosInstance } from "../lib/axios.js"
 import { useUserStore } from "./useUserStore"
 
 export const useProductStore = create((set, get) => ({
+	book : [],
 	products: [],
 	loading: false,
 	myProducts: [],
 	setProducts: (products) => set({ products }),
+	setBook: (book) => set({book}),
 	createProduct: async (productData) => {
 		set({ loading: true });
 		try {

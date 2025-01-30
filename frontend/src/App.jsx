@@ -6,6 +6,7 @@ import SignUpPage from './pages/SignUpPage'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Toaster } from "react-hot-toast";
 import { useUserStore } from './stores/useUserStore'
+import { useProductStore } from './stores/useProductStore'
 import  LoadingSpinner  from './components/LoadingSpinner'
 import Navbar from './components/Navbar'
 import CreateBookForm from './pages/CreateBookForm'
@@ -19,7 +20,7 @@ import AccountPage from './pages/AccountPage'
 function App() {
 
   const { user, checkAuth, checkingAuth, refreshToken } = useUserStore()
-  
+  const { book } = useProductStore()
   useEffect(()=>{
     checkAuth()
   },[checkAuth])
@@ -55,6 +56,7 @@ function App() {
         <Route path='/otp' element={<OTPVerificationForm/>}/>
         <Route path='/account' element={<AccountPage/>} />
         <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route path='/book' element= { <ProductPage book={book} />} />
       </Routes> 
       
    </div>
