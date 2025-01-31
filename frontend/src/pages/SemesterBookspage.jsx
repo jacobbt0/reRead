@@ -7,7 +7,7 @@ import Semester from "../components/Semester";
 
 const SemesterBooksPage = () => {
 	const { fetchProductsBySemester, products } = useProductStore();
-	const { setBook , book} = useProductStore()
+	
 	
 	
 	const { department, semester } = useParams()

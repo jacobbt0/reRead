@@ -6,7 +6,7 @@ import SignUpPage from './pages/SignUpPage'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Toaster } from "react-hot-toast";
 import { useUserStore } from './stores/useUserStore'
-import { useProductStore } from './stores/useProductStore'
+
 import  LoadingSpinner  from './components/LoadingSpinner'
 import Navbar from './components/Navbar'
 import CreateBookForm from './pages/CreateBookForm'
@@ -16,11 +16,12 @@ import ProductPage from './pages/ProductPage'
 import ProfilePage from './pages/ProfilePage'
 import OTPVerificationForm from './components/OTPVerificationForm'
 import AccountPage from './pages/AccountPage'
+import BuyerList from './components/BuyerList'
 
 function App() {
 
   const { user, checkAuth, checkingAuth, refreshToken } = useUserStore()
-  const { book } = useProductStore()
+  
   useEffect(()=>{
     checkAuth()
   },[checkAuth])
@@ -52,11 +53,12 @@ function App() {
         <Route path='/sell' element={user ? <CreateBookForm/> : <Navigate to="/"/>}/>
         <Route path='/:department/' element={<SemesterBooksPage/>}/>
         <Route path='/:department/:semester' element={<SemesterBooksPage/>}/>
-        <Route path='/chat' element={ <ChatPage/> }/>
+        <Route path='/chat' element={user ? <ChatPage/> : ""}/>
         <Route path='/otp' element={<OTPVerificationForm/>}/>
         <Route path='/account' element={<AccountPage/>} />
         <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
-        <Route path='/book' element= { <ProductPage book={book} />} />
+        <Route path='/book' element= { <ProductPage />} />
+        <Route path='buy' element={ <BuyerList/>} />
       </Routes> 
       
    </div>

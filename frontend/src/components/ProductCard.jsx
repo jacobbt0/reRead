@@ -3,13 +3,13 @@ import { useUserStore } from "../stores/useUserStore";
 import { useProductStore } from "../stores/useProductStore";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
+
 
 
 
 const ProductCard = ({ product }) => {
-	const { user } = useUserStore();
-	
+	const { user } = useUserStore()
+	const { book, setBook } = useProductStore()
 	
 	const loginError = async () =>{
 		if(!user) 	return toast.error("Login to chat")
@@ -20,7 +20,10 @@ const ProductCard = ({ product }) => {
 	return (
 
 		<div className='flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg cursor-pointer'>
-			
+			<Link 
+				to={"/book"}
+				onClick={()=>{ setBook(product)}}
+			>
 				<div className='relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl'>
 					<img className='object-cover w-full' src={product.bookImage} alt='product image' />
 					<div className='absolute inset-0 bg-black bg-opacity-20' />
@@ -36,7 +39,7 @@ const ProductCard = ({ product }) => {
 					<h6 className='text-sm font-semibold tracking-tight text-white mt-1 mb-1'>{product.author}</h6>
 					<h5 className='text-sm font-semibold tracking-tight text-white mt-1 mb-1'>{product.department}</h5>
 					<h5 className='text-sm font-semibold tracking-tight text-white mt-1 mb-1'>{product.semester}</h5>
-				
+					
 					<Link
 						to={"/chat"} 
 						onClick={
@@ -54,7 +57,7 @@ const ProductCard = ({ product }) => {
 
 					</Link>
 					</div>
-			
+					</Link>
 		</div>
 
 	);
