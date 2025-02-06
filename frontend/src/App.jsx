@@ -16,7 +16,8 @@ import ProductPage from './pages/ProductPage'
 import ProfilePage from './pages/ProfilePage'
 import OTPVerificationForm from './components/OTPVerificationForm'
 import AccountPage from './pages/AccountPage'
-import BuyerList from './components/BuyerList'
+import ReportPage from './pages/ReportPage'
+
 
 function App() {
 
@@ -24,12 +25,10 @@ function App() {
   
   useEffect(()=>{
     checkAuth()
-  },[checkAuth])
-
-
-  useEffect(()=>{
     refreshToken()
-  },[])
+  },[checkAuth,refreshToken])
+
+
 
  
   if (checkingAuth) return <LoadingSpinner />
@@ -58,7 +57,7 @@ function App() {
         <Route path='/account' element={<AccountPage/>} />
         <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
         <Route path='/book' element= { <ProductPage />} />
-        <Route path='buy' element={ <BuyerList/>} />
+        <Route path='/report' element= { <ReportPage/>} />
       </Routes> 
       
    </div>

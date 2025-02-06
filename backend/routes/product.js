@@ -11,7 +11,7 @@ import { protectRoute, adminRoute } from '../middleware/middleware.js'
 
 const router = express.Router()
 
-router.get('/',protectRoute, adminRoute, getAllBooks)
+router.get('/',protectRoute,  getAllBooks)
 router.post('/',protectRoute, createBook )
 router.delete('/:id',protectRoute, deleteBook)
 router.get('/:department/:semester', getBooksBySemester)

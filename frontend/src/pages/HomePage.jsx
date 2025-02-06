@@ -1,7 +1,4 @@
-import { useEffect } from "react";
 import Department from "../components/Department";
-import { useChatStore } from "../stores/useChatStore";
-
 
 const departments = [
 	{ href: "/bca", name: "BCA", },
@@ -9,7 +6,8 @@ const departments = [
 ];
 
 const HomePage = () => {
-	const { selectedUser } = useChatStore();
+
+	 
 
 	return (
 		<div className='relative min-h-screen text-white overflow-hidden'>
