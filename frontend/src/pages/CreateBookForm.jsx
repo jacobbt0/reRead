@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PlusCircle, Upload, Loader,  } from "lucide-react";
+import { PlusCircle, Upload, Loader, } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast"
 
-const departments = ["BCA",]
+const departments = ["BCA", "BA-ECONOMICS", "BA-ENGLISH", "BBA", "BCOM"]
 const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"]
 
 const CreateBookForm = () => {
@@ -16,7 +16,7 @@ const CreateBookForm = () => {
 		department: "",
 		semester: "",
 		bookImage: "",
-		author:"",
+		author: "",
 		sellerId: user._id,
 	});
 
@@ -25,7 +25,7 @@ const CreateBookForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			
+
 			await createProduct(newProduct)
 			setNewProduct({ title: "", department: "", price: "", semester: "", bookImage: "", author: "", sellerId: user._id })
 			return toast.success("Book added successfully")

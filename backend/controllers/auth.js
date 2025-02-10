@@ -136,11 +136,11 @@ export const loginWithGoogle = async (req, res) => {
 
 	const { token } = req.body
 	const name = jwt.decode(token).name
-	const phone = jwt.decode(token).phone
+	const email = jwt.decode(token).email
 
 
 	try {
-		const user = await User.findOne({ phone })
+		const user = await User.findOne({ email })
 		if (user) {
 			const { accessToken, refreshToken } = generateTokens(user._id)
 
@@ -149,11 +149,11 @@ export const loginWithGoogle = async (req, res) => {
 			res.status(201).json({
 				_id: user._id,
 				name: user.name,
-				phone: user.phone,
+				email: user.email,
 				role: user.role
 			})
 		} else {
-			const user = await User.create({ name, phone })
+			const user = await User.create({ name, email })
 
 			const { accessToken, refreshToken } = generateTokens(user._id)
 
@@ -163,7 +163,7 @@ export const loginWithGoogle = async (req, res) => {
 				message: "User created successfully",
 				_id: user._id,
 				name: user.name,
-				phone: user.phone,
+				email: user.email,
 				role: user.role
 			})
 

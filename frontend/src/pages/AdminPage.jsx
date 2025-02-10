@@ -24,7 +24,7 @@ const AdminPage = () => {
 		getReports()
 	}, [fetchAllProducts, getReports])
 	
-	console.log(products)
+
 
 	return (
 		<div className='min-h-screen relative overflow-hidden'>

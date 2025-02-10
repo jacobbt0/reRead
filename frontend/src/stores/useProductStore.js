@@ -67,7 +67,6 @@ export const useProductStore = create((set, get) => ({
 			const response = await axiosInstance.get(`/books/${userId._id}`)
 			set({ myProducts: response.data })
 
-			// setChats(res.data.chats);
 		} catch (err) {
 			console.error('Error fetching account data', err);
 		}

@@ -7,8 +7,8 @@ const Navbar = () => {
     const { user, logout } = useUserStore()
     const isAdmin = user?.role === "admin"
 
-    const loginError = () =>{
-        if(!user) 	return toast.error("Login to Sell")
+    const loginError = () => {
+        if (!user) return toast.error("Login to Sell")
     }
 
     return (
@@ -35,24 +35,32 @@ const Navbar = () => {
 
 
                     <nav className='flex flex-wrap items-center gap-4'>
-                        <div>
-                            <Link
-                                to={"/sell"}
-                                onClick={loginError}
-                                className='bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 
-									rounded-md flex items-center transition duration-300 ease-in-out'
-                            >
-                                <Plus className='mr-2 ' size={22} />
-                              Sell
-                            </Link>
-                        </div>
-                        <Link
-                            to={"/"}
-                            className='bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 
-                            rounded-md flex items-center transition duration-300 ease-in-out'
-                        >
-                            Home
-                        </Link>
+
+                        {!isAdmin &&(
+                            <div className="inline-flex gap-5">
+                            <div>
+                                       <Link
+                                           to={"/sell"}
+                                           onClick={loginError}
+                                           className='bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 
+                                   rounded-md flex items-center transition duration-300 ease-in-out'
+                                       >
+                                           <Plus className='mr-2 ' size={22} />
+                                           Sell
+                                       </Link>
+                                   </div>
+                                   <Link
+                                       to={"/"}
+                                       className='bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 
+                           rounded-md flex items-center transition duration-300 ease-in-out'
+                                   >
+                                       Home
+                                   </Link>
+                            </div>
+                        )
+
+                        }
+
                         {user && (
                             <Link
                                 to={"/account"}
@@ -66,7 +74,7 @@ const Navbar = () => {
                                     className='absolute -top-2 right-8  bg-emerald-500 text-white rounded-full px-1.5 py-0.2 
 									text-xs group-hover:bg-emerald-400 transition duration-300 ease-in-out'
                                 >
-                                    
+
                                 </span>
 
                             </Link>

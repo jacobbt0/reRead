@@ -5,9 +5,9 @@ import {
     sendReport,
 } from '../controllers/report.js'
 
-import { protectRoute } from '../middleware/middleware.js'
+import { protectRoute, adminRoute } from '../middleware/middleware.js'
 router.post('/send-report/:id', protectRoute, sendReport)
-router.get('/get-report', getAllReports)
+router.get('/get-report', protectRoute, adminRoute, getAllReports)
 
 
 export default router

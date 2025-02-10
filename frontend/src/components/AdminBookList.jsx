@@ -1,6 +1,6 @@
 import { useState } from 'react'
 const AdminBookList = ({products}) => {
-    console.log(products)
+
 
      const [page, setPage] = useState(0);
         const [rowsPerPage, setRowsPerPage] = useState(10);

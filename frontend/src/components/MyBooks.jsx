@@ -6,10 +6,9 @@ const MyBooks = ({ product }) => {
       <img className="w-full h-64 object-cover" src={product.bookImage} alt={product.name} />
       
       <div className="px-6 py-4">
-     
+    
         <h2 className="text-xl font-semibold text-green-600">{product.title}</h2>
 
-       
         <p className="text-green-600 font-semibold text-lg mt-2">₹{product.price}</p>
       </div>
     </div>

@@ -11,7 +11,7 @@ const BASE_URL = "http://localhost:8888"
 export const useUserStore = create((set, get) => ({
 	user: null,
 	loading: false,
-	checkingAuth: true,
+	checkingAuth: false,
 	onlineUsers: [],
 	socket: null,
 
@@ -79,13 +79,16 @@ export const useUserStore = create((set, get) => ({
 
 	refreshToken: async () => {
 		// Prevent multiple simultaneous refresh attempts
-		if (get().checkingAuth) return
-
+		if (get().checkingAuth) return 
+		
 		set({ checkingAuth: true })
 		try {
 			const response = await axiosInstance.post("/auth/refresh-token");
+			
 			set({user: response.data, checkingAuth: false })
+			console.log("refresh")
 			return response.data
+			
 		} catch (error) {
 			set({ user: null, checkingAuth: false });
 			throw error
