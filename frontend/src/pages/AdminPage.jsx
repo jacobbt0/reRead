@@ -1,5 +1,5 @@
 import ReportsTable from "../components/ReportsTable";
-import { BarChart, Flag, Book } from "lucide-react";
+import { Flag, Book } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
@@ -10,7 +10,7 @@ import AdminBookList from "../components/AdminBookList";
 const tabs = [
 	{ id: "reports", label: "Reports", icon: Flag },
 	{ id: "books", label: "Books", icon: Book },
-	{ id: "analytics", label: "Analytics", icon: BarChart },
+
 ];
 
 const AdminPage = () => {
@@ -23,7 +23,7 @@ const AdminPage = () => {
 		fetchAllProducts()
 		getReports()
 	}, [fetchAllProducts, getReports])
-	
+
 
 
 	return (
@@ -53,8 +53,8 @@ const AdminPage = () => {
 						</button>
 					))}
 				</div>
-				
-				<AdminBookList products={products} />
+				{activeTab === "reports" && <ReportsTable />}
+				{activeTab === "books" && <AdminBookList products={products} />}
 
 			</div>
 		</div>

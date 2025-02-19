@@ -49,11 +49,13 @@ export const useProductStore = create((set, get) => ({
 	deleteProduct: async (productId) => {
 		set({ loading: true });
 		try {
+			
 			await axiosInstance.delete(`/books/${productId}`)
 			set((prevProducts) => ({
 				products: prevProducts.products.filter((product) => product._id !== productId),
 				loading: false,
 			}));
+			toast.success("Book deleted")
 		} catch (error) {
 			set({ loading: false });
 			toast.error(error.response.data.error || "Failed to delete product");
@@ -64,7 +66,9 @@ export const useProductStore = create((set, get) => ({
 		try {
 
 			const userId = useUserStore.getState().user
-			const response = await axiosInstance.get(`/books/${userId._id}`)
+			console.log("User",userId)
+			const response = await axiosInstance.get(`/books/${userId?._id}`)
+			console.log(response)
 			set({ myProducts: response.data })
 
 		} catch (err) {
