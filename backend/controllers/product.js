@@ -46,6 +46,7 @@ export const createBook = async (req, res) => {
 }
 
 export const deleteBook = async (req, res) => {
+    console.log(req.params.id)
     try {
 		const book = await Product.findById(req.params.id);
 

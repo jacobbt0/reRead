@@ -36,7 +36,7 @@ export const sendOTP = async (req, res) => {
 	const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
 	const otp = crypto.randomInt(100000, 999999).toString()
 	const { phone } = req.body
-	console.log(phone)
+	
 	try {  
 		await client.messages.create({
 			body: `Your Verification code for REREAD MARKETPLACE: ${otp}`,

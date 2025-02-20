@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema(
         },
         phone: {
             type: Number,
+            minlength:10,
+            maxlength: 10,
             unique: true,
             trim: true,
 
