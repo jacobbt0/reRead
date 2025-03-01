@@ -18,6 +18,10 @@ const messageSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    bookId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product"
+    },
   },
   { timestamps: true }
 );

@@ -18,6 +18,7 @@ import OTPVerificationForm from './components/OTPVerificationForm'
 import AccountPage from './pages/AccountPage'
 import ReportPage from './pages/ReportPage'
 import Test from './pages/Test'
+import UpdateBookForm from './pages/UpdateBookForm'
 
 
 function App() {
@@ -38,7 +39,7 @@ function App() {
     <div className='min-h-screen  bg-gray-900 text-white relative overflow-hidden' >
    
 
-      <div className='relative z-50 pt-6'>
+      <div className='relative z-50 pt-6 bg-gray-50'>
         <Navbar />
         <Routes>
           <Route path='/test' element={<Test />} />
@@ -49,12 +50,13 @@ function App() {
           <Route path='/sell' element={user ? <CreateBookForm /> : <Navigate to="/" />} />
           <Route path='/:department/' element={<SemesterBooksPage />} />
           <Route path='/:department/:semester' element={<SemesterBooksPage />} />
-          <Route path='/chat' element={user ? <ChatPage /> : ""} />
+          <Route path='/chat' element={user ? <ChatPage /> : <Navigate to="/" />} />
           <Route path='/otp' element={<OTPVerificationForm />} />
           <Route path='/account' element={<AccountPage />} />
           <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
           <Route path='/book' element={<ProductPage />} />
           <Route path='/report' element={<ReportPage />} />
+          <Route path='/update' element={ <UpdateBookForm/> } />
         </Routes>
 
       </div>

@@ -30,8 +30,8 @@ const ReportPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-gray-50 shadow-md rounded-lg text-gray-900">
-      <h1 className="text-3xl font-semibold text-center text-gray-700 mb-6">Report a User</h1>
+    <div className="max-w-3xl h-screen mx-auto bg-gray-50 shadow-md rounded-lg text-gray-900">
+      <h1 className="text-3xl font-semibold text-center text-gray-700 mt-16">Report a User</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
 
         <div>

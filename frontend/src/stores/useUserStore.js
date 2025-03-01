@@ -10,6 +10,7 @@ const BASE_URL = "http://localhost:8888"
 
 export const useUserStore = create((set, get) => ({
 	user: null,
+	seller: null,
 	loading: false,
 	checkingAuth: false,
 	onlineUsers: [],
@@ -67,9 +68,9 @@ export const useUserStore = create((set, get) => ({
 		set({ checkingAuth: true });
 		try {
 			const response = await axiosInstance.get("/auth/profile")
-			
+
 			set({ user: response.data, checkingAuth: false })
-		
+
 			get().connectSocket()
 		} catch (error) {
 			console.log(error)
@@ -79,16 +80,16 @@ export const useUserStore = create((set, get) => ({
 
 	refreshToken: async () => {
 		// Prevent multiple simultaneous refresh attempts
-		if (get().checkingAuth) return 
-		
+		if (get().checkingAuth) return
+
 		set({ checkingAuth: true })
 		try {
 			const response = await axiosInstance.post("/auth/refresh-token");
-			
-			set({user: response.data, checkingAuth: false })
+
+			set({ user: response.data, checkingAuth: false })
 			console.log("refresh")
 			return response.data
-			
+
 		} catch (error) {
 			set({ user: null, checkingAuth: false });
 			throw error
@@ -112,10 +113,24 @@ export const useUserStore = create((set, get) => ({
 			set({ onlineUsers: userIds });
 		});
 	},
+
 	disconnectSocket: () => {
 		if (get().socket?.connected) get().socket.disconnect();
 	},
+
+	getUser: async (userId) => {
+		set({ loading: true })
+		try {
+			const res = await axiosInstance.get(`/auth/user/${userId}`)
+			set({ seller: res.data, loading: false })
+		} catch (error) {
+			console.log("Error in getUser",error)
+		}
+	}
+
 }));
+
+
 
 
 

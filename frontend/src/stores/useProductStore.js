@@ -3,16 +3,19 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios.js"
 import { useUserStore } from "./useUserStore"
 
+
 export const useProductStore = create((set, get) => ({
-	book : [],
+	book: [],
 	products: [],
 	loading: false,
 	myProducts: [],
+	updatingBook: [],
 	setProducts: (products) => set({ products }),
-	setBook: (book) => set({book}),
+	setBook: (book) => set({ book }),
 	createProduct: async (productData) => {
 		set({ loading: true });
 		try {
+		
 			const res = await axiosInstance.post("/books", productData);
 			set((prevState) => ({
 				products: [...prevState.products, res.data],
@@ -28,7 +31,7 @@ export const useProductStore = create((set, get) => ({
 		set({ loading: true });
 		try {
 			const response = await axiosInstance.get("/books");
-			
+
 			set({ products: response.data.books, loading: false });
 		} catch (error) {
 			set({ error: "Failed to fetch products", loading: false });
@@ -46,18 +49,18 @@ export const useProductStore = create((set, get) => ({
 			toast.error(error.response.data.error || "Failed to fetch products");
 		}
 	},
-	deleteProduct: async (productId) => {
-		set({ loading: true });
+	deleteProduct: async (productId,) => {
+		set({ loading: true })
 		try {
-			
+
 			await axiosInstance.delete(`/books/${productId}`)
 			set((prevProducts) => ({
 				products: prevProducts.products.filter((product) => product._id !== productId),
 				loading: false,
-			}));
+			}))
 			toast.success("Book deleted")
 		} catch (error) {
-			set({ loading: false });
+			set({ loading: false })
 			toast.error(error.response.data.error || "Failed to delete product");
 		}
 	},
@@ -66,14 +69,24 @@ export const useProductStore = create((set, get) => ({
 		try {
 
 			const userId = useUserStore.getState().user
-			console.log("User",userId)
 			const response = await axiosInstance.get(`/books/${userId?._id}`)
-			console.log(response)
 			set({ myProducts: response.data })
 
 		} catch (err) {
 			console.error('Error fetching account data', err);
 		}
-	}
+	},
+
+	updateProduct: async (productId, productData) => {
+		set({ loading: true })
+		try {
+			const response = await axiosInstance.put(`/books/${productId}`,productData)
+			set({ loading: false , myProducts: [response.data.product ]})
+			
+		} catch (error) {
+
+		}
+	},
+	setUpdatingBook: (updatingBook) => set({updatingBook})
 
 }))

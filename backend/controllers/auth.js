@@ -1,8 +1,9 @@
 import User from '../models/user.js'
 import jwt from 'jsonwebtoken'
 import twilio from 'twilio'
-import crypto from 'crypto' 
+import crypto from 'crypto'
 import bcrypt from 'bcrypt'
+import mongoose from "mongoose";
 
 const otps = {}
 const generateTokens = (userId) => {
@@ -36,20 +37,20 @@ export const sendOTP = async (req, res) => {
 	const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
 	const otp = crypto.randomInt(100000, 999999).toString()
 	const { phone } = req.body
-	
-	try {  
+
+	try {
 		await client.messages.create({
 			body: `Your Verification code for REREAD MARKETPLACE: ${otp}`,
 			from: '+12313104187',
-			to: phone 
-			 
-		}) 
+			to: phone
+
+		})
 		const hashedOtp = await bcrypt.hash(otp, 10)
 		otps[phone] = { otp: hashedOtp, timestamp: Date.now() }
 		res.status(200).send('OTP sent successfully.')
 	} catch (error) {
 		console.error('Error sending OTP SMS:', error);
-	} 
+	}
 
 
 }
@@ -57,7 +58,7 @@ export const sendOTP = async (req, res) => {
 export const verifyOTP = async (req, res) => {
 	const { phone, otp } = req.body
 	const storedOtp = otps[phone]
-	console.log(otps) 
+	console.log(otps)
 	if (!storedOtp) {
 		return res.status(400).send('OTP not sent or expired.');
 	}
@@ -65,7 +66,7 @@ export const verifyOTP = async (req, res) => {
 		delete otps[phone]; // OTP expired, delete it
 		return res.status(400).send('OTP expired.');
 	}
-	
+
 	const isMatch = await bcrypt.compare(otp, storedOtp.otp);
 
 	if (isMatch) {
@@ -74,13 +75,13 @@ export const verifyOTP = async (req, res) => {
 		res.status(400).send('Invalid OTP.');
 	}
 }
- 
+
 export const signup = async (req, res) => {
 
 	const { name, phone, password } = req.body
 	try {
 		const userExist = await User.findOne({ phone })
-	
+
 		if (userExist) {
 			return res.status(400).json({ message: "User already exists" })
 		}
@@ -191,8 +192,6 @@ export const logout = async (req, res) => {
 	}
 }
 
-
-
 export const refreshToken = async (req, res) => {
 	try {
 		const refreshToken = req.cookies.refreshToken
@@ -224,5 +223,21 @@ export const getProfile = async (req, res) => {
 		res.json(req.user)
 	} catch (error) {
 		res.status(500).json({ message: "Server error", error: error.message })
+	}
+}
+
+export const getUser = async (req, res) => {
+	const { id } = req.params
+	try {
+		const user = await User.findById(id)
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		
+		res.status(200).json(user)
+
+	} catch (error) {
+		console.error("Error fetching user:", error);
+		res.status(500).json({ error: "Internal server error" });
 	}
 }

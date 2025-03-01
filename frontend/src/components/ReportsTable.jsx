@@ -34,7 +34,7 @@ const ReportsTable = ({ reports, loading }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {reports.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((report, i) => {
+                        {reports?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((report, i) => {
                             
                             const date = new Date(report.createdAt);
                             const formattedDate = date.toLocaleDateString('en-US')
@@ -76,12 +76,12 @@ const ReportsTable = ({ reports, loading }) => {
                         Previous
                     </button>
                     <span className="mx-2 text-sm">
-                        Page {page + 1} of {Math.ceil(reports.length / rowsPerPage)}
+                        Page {page + 1} of {Math.ceil(reports?.length / rowsPerPage)}
                     </span>
                     <button
                         className="px-4 py-2 text-gray-300 bg-emerald-700 rounded-md disabled:opacity-50"
                         onClick={(e) => handleChangePage(e, page + 1)}
-                        disabled={page === Math.ceil(reports.length / rowsPerPage) - 1}
+                        disabled={page === Math.ceil(reports?.length / rowsPerPage) - 1}
                     >
                         Next
                     </button>

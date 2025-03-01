@@ -22,6 +22,8 @@ const OTPVerificationForm = ({sendData}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const otpValue = otp.join("");
+    console.log("otp",otpValue)
+    console.log(typeof sendData)
     sendData(otpValue)
     setOtp(["", "", "", "", "", ""])
     
