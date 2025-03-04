@@ -19,6 +19,7 @@ import AccountPage from './pages/AccountPage'
 import ReportPage from './pages/ReportPage'
 import Test from './pages/Test'
 import UpdateBookForm from './pages/UpdateBookForm'
+import BookList from './pages/BookList'
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
 
   return (
     <div className='min-h-screen  bg-gray-900 text-white relative overflow-hidden' >
-   
+
 
       <div className='relative z-50 pt-6 bg-gray-50'>
         <Navbar />
@@ -56,7 +57,8 @@ function App() {
           <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
           <Route path='/book' element={<ProductPage />} />
           <Route path='/report' element={<ReportPage />} />
-          <Route path='/update' element={ <UpdateBookForm/> } />
+          <Route path='/update' element={<UpdateBookForm />} />
+          <Route path='/books-by-title' element={<BookList />}  />
         </Routes>
 
       </div>

@@ -22,10 +22,10 @@ export const createBook = async (req, res) => {
         let cloudinaryResponse = null
 
         if (bookImage) {
-           
+
             cloudinaryResponse = await cloudinary?.uploader?.upload(bookImage, { folder: "books" })
-           
-          
+
+
         }
 
         const book = await Product.create({
@@ -48,8 +48,8 @@ export const createBook = async (req, res) => {
     }
 }
 
-export const deleteBook = async (req, res) => { 
-    
+export const deleteBook = async (req, res) => {
+
     try {
         const book = await Product.findById(req.params.id);
 
@@ -103,7 +103,7 @@ export const getBooksBySemester = async (req, res) => {
 
 }
 
-export const updateBook = async(req, res) => {
+export const updateBook = async (req, res) => {
     try {
         const productId = req.params.id;
         const updates = req.body;
@@ -130,3 +130,35 @@ export const updateBook = async(req, res) => {
     }
 }
 
+export const searchBook = async (req, res) => {
+
+    try {
+        const query = req.params.query
+        if (!query) return res.json([]);
+
+        const books = await Product.find({
+            $or: [
+                { title: { $regex: query, $options: "i" } }, // Case-insensitive title search
+                { author: { $regex: query, $options: "i" } }, // Case-insensitive author search
+            ],
+        }).limit(10); // Limit results for better performance
+
+        res.json(books);
+    } catch (error) {
+        console.error("Error searching books:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+export const getBooksByTitle = async (req,res) => {
+
+    const title = req.params.title
+  
+    try {
+        const books = await Product.find({ title })
+        res.json(books)
+    } catch (error) {
+        console.error("Error in get books by title", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}

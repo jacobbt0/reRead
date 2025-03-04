@@ -5,6 +5,7 @@ import { useChatStore } from "../stores/useChatStore";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
+
 const ProductCard = ({ product }) => {
     const { user, getUser, seller } = useUserStore();
     const { setBook } = useProductStore();
@@ -12,7 +13,7 @@ const ProductCard = ({ product }) => {
     const loginError = async () => {
         if (!user) return toast.error("Login to chat");
     };
-
+   
     return (
         <div className='flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-200 shadow-lg cursor-pointer bg-white'>
             <Link

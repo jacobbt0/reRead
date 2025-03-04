@@ -36,7 +36,7 @@ const SemesterBooksPage = () => {
             <div className='relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
                 {/* Dropdown Menu for Semesters */}
                 <div className="relative inline-block text-left mb-8">
-                    <div>
+                    <div className="pt-2 mt-2">
                         <button
                             type="button"
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}

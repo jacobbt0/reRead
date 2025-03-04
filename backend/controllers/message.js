@@ -16,16 +16,16 @@ export const getUsersForSidebar = async (req, res) => {
 
       const messages = await Message.find({ bookId }).select("senderId receiverId")
       
-      const userIds = [
+   /*   const userIds = [
         ...new Set(messages.flatMap(msg => [msg.senderId.toString(), msg.receiverId.toString()]))
       ].filter(id => id !== loggedInUserId)
 
-      if(bookSellerId === loggedInUserId){
-        const filteredUsers = await User.find({ _id: { userIds } }).select("-password");
+  */
+      const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
         res.status(200).json(filteredUsers);
-      }
+    
   
-      
+       
     } catch (error) {
       console.error("Error in getUsersForSidebar: ", error.message);
       res.status(500).json({ error: "Internal server error" });

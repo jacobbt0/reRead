@@ -1,6 +1,7 @@
 import { User, UserPlus, LogIn, LogOut, Lock, Plus, Search, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../stores/useUserStore";
+import SearchBar from "./SearchBar";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
@@ -21,17 +22,7 @@ const Navbar = () => {
                         ReRead Marketplace
                     </Link>
 
-                    {/* Search Bar */}
-                    <div className="flex">
-                        <input
-                            type="search"
-                            placeholder="Search for books..."
-                            className="w-96 px-2 py-2 bg-gray-50 text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        <button type='button' className="relative right-14 -mx-0.5 rounded-md flex items-center justify-center bg-blue-500 hover:bg-blue-600 px-5">
-                            <Search size={22} />
-                        </button>
-                    </div>
+                    <SearchBar />
 
                     {/* Navigation Links */}
                     <nav className='flex flex-wrap items-center gap-4'>
@@ -61,10 +52,7 @@ const Navbar = () => {
                                     <User className='inline-block mr-1' size={25} />
                                     <span className='hidden sm:inline'>Account</span>
                                 </Link>
-                                <Link to={"/chat"}  className='bg-blue-500 hover:bg-blue-600 text-white font-semibold h-9 w-28 rounded-md flex items-center justify-center transition duration-300 gap-1'>
-                                    <MessageCircle  size={22} />
-                                     Messages
-                                </Link>
+                                
                             </div>
                         )}
 

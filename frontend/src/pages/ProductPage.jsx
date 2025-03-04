@@ -20,7 +20,7 @@ const ProductPage = () => {
             />
           </div>
           <div className="w-full  text-center lg:text-left">
-            <h1 className="text-4xl font-semibold text-gray-800 hover:text-emerald-600 transition-all duration-300">{book.name}</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 hover:text-emerald-600 transition-all duration-300">{book.title}</h1>
             <h2 className="text-xl text-emerald-600 mt-2">{book.author}</h2>
             <div className="mt-6 space-y-4 text-gray-700">
               <div className="flex justify-between">
