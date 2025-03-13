@@ -6,6 +6,7 @@ import { io } from "socket.io-client"
 
 
 
+
 const BASE_URL = "http://localhost:8888"
 
 export const useUserStore = create((set, get) => ({
@@ -15,6 +16,7 @@ export const useUserStore = create((set, get) => ({
 	checkingAuth: false,
 	onlineUsers: [],
 	socket: null,
+	allUsers: [],
 
 	signup: async ({ name, phone, password, }) => {
 		set({ loading: true })
@@ -125,6 +127,25 @@ export const useUserStore = create((set, get) => ({
 			set({ seller: res.data, loading: false })
 		} catch (error) {
 			console.log("Error in getUser",error)
+		}
+	},
+	
+	getAllUsers: async () => {
+		try {
+            const res = await axiosInstance.get('/auth/get-all-users')
+			console.log("res",res)
+            set({ allUsers: res.data, loading: false })
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+	},
+
+	banUser: async(userId) =>{
+		try {
+			const res = await axiosInstance.put(`/auth/ban/${userId}`)
+			toast.success(res.data)
+		} catch (error) {
+			toast.error(error)
 		}
 	}
 

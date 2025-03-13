@@ -13,11 +13,7 @@ const departments = [
 
 ];
 
-const featuredBooks = [
-    { title: "Data Structures & Algorithms", price: "$15", image: "/images/dsa.jpg" },
-    { title: "Thermodynamics", price: "$12", image: "/images/thermo.jpg" },
-    { title: "Digital Electronics", price: "$10", image: "/images/digital.jpg" },
-];
+
 
 const HomePage = () => {
     return (
@@ -47,28 +43,6 @@ const HomePage = () => {
                 </div>
             </section>
 
-            {/* Featured Books */}
-            <section className="max-w-6xl mx-auto py-12">
-                <h2 className="text-2xl font-bold text-center mb-6">Featured Books</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {featuredBooks.map((book, index) => (
-                        <Link>
-                            <Card key={index} className="text-center bg-white shadow-lg justify-items-center">
-                                <img src={book.image} alt={book.title} className="h-40 w-full object-cover" />
-                                <CardContent>
-                                    <h3 className="text-lg font-semibold">{book.title}</h3>
-                                    <p className="text-gray-600">{book.price}</p>
-                                    <Button variant="chat" className="mt-4 flex ml-6">
-                                        < MessageCircle size={22} className='mr-2' />
-                                        Chat
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </Link>
-
-                    ))}
-                </div>
-            </section>
 
 
         </div>

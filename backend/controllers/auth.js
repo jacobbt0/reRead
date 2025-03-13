@@ -49,6 +49,7 @@ export const sendOTP = async (req, res) => {
 		otps[phone] = { otp: hashedOtp, timestamp: Date.now() }
 		res.status(200).send('OTP sent successfully.')
 	} catch (error) {
+	
 		console.error('Error sending OTP SMS:', error);
 	}
 
@@ -239,5 +240,27 @@ export const getUser = async (req, res) => {
 	} catch (error) {
 		console.error("Error fetching user:", error);
 		res.status(500).json({ error: "Internal server error" });
+	}
+}
+
+export const getAllUsers = async (req, res) => {
+	try {
+		const users = await User.find({ role: { $ne: "admin" } })
+		res.json(users)
+	} catch (error) {
+		console.log("Error in getAllReports controllers", error.message)
+		res.status(500).json({ message: "server error" })
+	}
+}
+
+export const banUser = async (req, res) => {
+	try {
+		console.log(req.params.id)
+		const user = await User.findByIdAndUpdate(req.params.id, { banned: true }, { new: true });
+		if (!user) return res.status(404).json({ message: "User not found" });
+
+		res.status(200).json({ message: "User banned successfully", user });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
 	}
 }

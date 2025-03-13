@@ -42,7 +42,7 @@ const ProductPage = () => {
             >
               <button className="mt-6 bg-emerald-600 text-white px-8 py-3 rounded-full hover:bg-emerald-700 transition duration-300 ease-in-out transform hover:scale-105"
                 onClick={
-                  user ? "" : toast.error("Login to chat")
+                  () => {!user ? toast.error("Login to chat"): ""}
                 }
               >
                 Contact Seller

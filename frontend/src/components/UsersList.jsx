@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import LoadingSpinner from './LoadingSpinner'
+const UsersList = ({ users }) => {
 
-const ReportsTable = ({ reports, loading }) => {
-
+    
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -13,44 +12,39 @@ const ReportsTable = ({ reports, loading }) => {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-    };
-
-    if (loading) {
-        <LoadingSpinner />
     }
 
     return (
+
         <div className="max-w-7xl mx-auto p-6 text-emerald-600">
-            <h2 className="text-2xl font-bold mb-4">Reports</h2>
+            <h2 className="text-2xl font-bold mb-4">Users</h2>
             <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                 <table className="min-w-full table-auto text-black">
                     <thead className="bg-gray-100">
-                        <tr>
-                            <th className="py-2 px-4 border-b text-left">ID</th>
-                            <th className="py-2 px-4 border-b text-left">Reported User ID</th>
-                            <th className="py-2 px-4 border-b text-left">Report Date</th>
-                            <th className="py-2 px-4 border-b text-left">Reason</th>
-                            <th className="py-2 px-4 border-b text-left">Description</th>
-                            <th className="py-2 px-4 border-b text-left">BookId</th>
+                        <tr >
+                            <th className="py-2 px-4 border-b text-left">IDt</th>
+                            <th className="py-2 px-4 border-b text-left"> User ID</th>
+                            <th className="py-2 px-4 border-b text-left">Name</th>
+                            <th className="py-2 px-4 border-b text-left">Phone</th>
+                            <th className="py-2 px-4 border-b text-left">Email</th>
+
+
+
                         </tr>
                     </thead>
                     <tbody>
-                        {reports?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((report, i) => {
-
-                            const date = new Date(report.createdAt);
-                            const formattedDate = date.toLocaleDateString('en-US')
-                            console.log(report)
+                        {users?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, i) => {
                             return (
-                                <tr key={report.id}>
+                                <tr key={user.id}>
                                     <td className="py-2 px-4 border-b">{i + 1}</td>
-                                    <td className="py-2 px-4 border-b">{report.reportedUserId}</td>
-                                    <td className="py-2 px-4 border-b">{formattedDate}</td>
-                                    <td className="py-2 px-4 border-b">{report.reason }</td>
-                                    <td className="py-2 px-4 border-b">{report.details}</td>
-                                    <td className="py-2 px-4 border-b">{report.bookId}</td>
+                                    <td className="py-2 px-4 border-b">{user._id}</td>
+                                    <td className="py-2 px-4 border-b">{user.name}</td>
+                                    <td className="py-2 px-4 border-b">{user.phone}</td>
+                                    <td className="py-2 px-4 border-b">{user.email}</td>
+                                   
 
                                 </tr>
-                            );
+                            )
                         })}
 
                     </tbody>
@@ -79,12 +73,12 @@ const ReportsTable = ({ reports, loading }) => {
                         Previous
                     </button>
                     <span className="mx-2 text-sm">
-                        Page {page + 1} of {Math.ceil(reports?.length / rowsPerPage)}
+                        Page {page + 1} of {Math.ceil(users.length / rowsPerPage)}
                     </span>
                     <button
                         className="px-4 py-2 text-gray-300 bg-emerald-700 rounded-md disabled:opacity-50"
                         onClick={(e) => handleChangePage(e, page + 1)}
-                        disabled={page === Math.ceil(reports?.length / rowsPerPage) - 1}
+                        disabled={page === Math.ceil(users.length / rowsPerPage) - 1}
                     >
                         Next
                     </button>
@@ -94,6 +88,4 @@ const ReportsTable = ({ reports, loading }) => {
     );
 };
 
-
-
-export default ReportsTable
+export default UsersList;

@@ -1,27 +1,32 @@
 import ReportsTable from "../components/ReportsTable";
-import { Flag, Book } from "lucide-react";
+import { Flag, Book, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { useProductStore } from "../stores/useProductStore";
 import { useReportStore } from '../stores/useReportStore'
+import { useUserStore } from "../stores/useUserStore";
 import AdminBookList from "../components/AdminBookList";
+import UsersList from "../components/UsersList";
 
 const tabs = [
 	{ id: "reports", label: "Reports", icon: Flag },
 	{ id: "books", label: "Books", icon: Book },
+	{ id: "users", label: "Users", icon: User },
 
 ];
 
 const AdminPage = () => {
 
-	const [activeTab, setActiveTab] = useState("reports");
-	const { fetchAllProducts, products } = useProductStore();
+	const [activeTab, setActiveTab] = useState("reports")
+	const { fetchAllProducts, products } = useProductStore()
 	const { allReports, loading, getReports } = useReportStore()
+	const { allUsers, getAllUsers } = useUserStore()
 
 	useEffect(() => {
 		fetchAllProducts()
 		getReports()
+		getAllUsers()
 	}, [fetchAllProducts, getReports])
 
 
@@ -53,8 +58,9 @@ const AdminPage = () => {
 						</button>
 					))}
 				</div>
-				{activeTab === "reports" && <ReportsTable />}
+				{activeTab === "reports" && <ReportsTable reports={allReports} loading={loading} />}
 				{activeTab === "books" && <AdminBookList products={products} />}
+				{activeTab === "users" && <UsersList users={allUsers} />}
 
 			</div>
 		</div>

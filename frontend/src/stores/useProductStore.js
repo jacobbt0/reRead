@@ -71,7 +71,7 @@ export const useProductStore = create((set, get) => ({
 		try {
 
 			const userId = useUserStore.getState().user
-			const response = await axiosInstance.get(`/get-account/books/${userId?._id}`)
+			const response = await axiosInstance.get(`/books/get-account/${userId?._id}`)
 			set({ myProducts: response.data })
 
 		} catch (err) {

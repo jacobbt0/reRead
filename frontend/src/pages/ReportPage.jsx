@@ -17,8 +17,9 @@ const ReportPage = () => {
     }
 
     try {
-
+      console.log("reportData",reportData)
       await sendReport(reportData)
+      
       setReason('')
       setDescription('')
       return toast.success("Report sended successfully")
@@ -31,7 +32,7 @@ const ReportPage = () => {
 
   return (
     <div className="max-w-3xl h-screen mx-auto bg-gray-50 shadow-md rounded-lg text-gray-900">
-      <h1 className="text-3xl font-semibold text-center text-gray-700 mt-16">Report a User</h1>
+      <h1 className="text-3xl font-semibold text-center text-gray-700 mt-16">Report Book</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
 
         <div>

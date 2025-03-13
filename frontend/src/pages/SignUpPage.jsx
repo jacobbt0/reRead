@@ -28,7 +28,7 @@ const SignUpPage = () => {
   }; 
 
   const handleLoginFailure = (error) => {
-    console.log('Login Failed:', error);
+    toast.error("Login failed")
   };
   const verifyOTP = async (otp) => {
     console.log(otp,"otp")
@@ -38,6 +38,7 @@ const SignUpPage = () => {
 			console.log(response)
 			setOtpVerified(true)
 			signup(formData)
+
 		} catch (error) {
 			toast.error(error.response.data || "An error occurred")
 
@@ -52,14 +53,21 @@ const SignUpPage = () => {
     if (formData.password.length < 6) {
       return toast.error("Password must be at least 6 characters long");
     }
+    if( formData.phone.length < 13 || formData.phone.length > 13 ){
+      return toast.error("Enter a valid Phone Number");
+    }
     try {
       await axiosInstance.post("http://localhost:8888/api/auth/send-otp", { phone: formData.phone });
       setOtpSend(true);
       toast.success("OTP Sent");
     } catch (error) {
-      toast.error(error.response?.data || "An error occurred");
+      toast.error(error || "An error occurred");
     }
   };
+  if(otpSend){
+    console.log("hyyyyyy")
+    toast.error("Enter a valid Phone number")
+  }
   if (otpSend) {
     return (
        <OTPVerificationForm sendData={verifyOTP} />

@@ -1,4 +1,5 @@
 import { MessageCircle } from "lucide-react";
+import { Flag } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
 import { useProductStore } from "../stores/useProductStore";
 import { useChatStore } from "../stores/useChatStore";
@@ -13,16 +14,18 @@ const ProductCard = ({ product }) => {
     const loginError = async () => {
         if (!user) return toast.error("Login to chat");
     };
-   
+
     return (
         <div className='flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-200 shadow-lg cursor-pointer bg-white'>
             <Link
                 to={"/book"}
-                onClick={() => { setBook(product); 
+                onClick={() => {
+                    setBook(product);
                     getUser(product.sellerId)
                     setSelectedUser(seller)
-                 }}
+                }}
             >
+
                 <div className='relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl'>
                     <img className='object-cover w-full' src={product.bookImage} alt='product image' />
                     <div className='absolute inset-0 bg-black bg-opacity-10' />
@@ -47,9 +50,20 @@ const ProductCard = ({ product }) => {
                         <MessageCircle size={22} className='mr-2' />
                         Chat
                     </Link>
-                </div>
-            </Link>
+
+                    <Link
+                        to={"/report"}
+                        className='flex items-center justify-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-blue-300 mt-2'
+                        onClick={ () => { !user ? toast.error("Login for Report") : "" }}
+                       >
+                        <Flag />
+                        Report
+                    </Link>
+
+                
         </div>
+            </Link >
+        </div >
     );
 };
 

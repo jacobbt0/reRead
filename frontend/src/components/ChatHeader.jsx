@@ -1,4 +1,4 @@
-import { Flag, X } from "lucide-react";
+
 import { useUserStore } from "../stores/useUserStore";
 import { useChatStore } from "../stores/useChatStore";
 import { Link } from "react-router-dom";
@@ -27,14 +27,7 @@ const ChatHeader = () => {
           </div>
         </div>
 
-        <div className="flex m-2 gap-5">
-          <Link to={"/report"}>
-          <Flag />
-          </Link>
-          <button onClick={() => setSelectedUser(null)}>
-            <X />
-          </button>
-        </div>
+        
 
       </div>
     </div>

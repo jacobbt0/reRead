@@ -4,7 +4,7 @@ import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useUserStore } from './stores/useUserStore'
 
 import LoadingSpinner from './components/LoadingSpinner'
@@ -17,6 +17,7 @@ import ProfilePage from './pages/ProfilePage'
 import OTPVerificationForm from './components/OTPVerificationForm'
 import AccountPage from './pages/AccountPage'
 import ReportPage from './pages/ReportPage'
+import ReportBook from './pages/ReportBook'
 import Test from './pages/Test'
 import UpdateBookForm from './pages/UpdateBookForm'
 import BookList from './pages/BookList'
@@ -55,8 +56,8 @@ function App() {
           <Route path='/otp' element={<OTPVerificationForm />} />
           <Route path='/account' element={<AccountPage />} />
           <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
-          <Route path='/book' element={<ProductPage />} />
-          <Route path='/report' element={<ReportPage />} />
+          <Route path='/book' element={<ProductPage />} /> 
+          <Route path='/report' element={user ? <ReportBook /> : <Navigate to="/login" /> } />
           <Route path='/update' element={<UpdateBookForm />} />
           <Route path='/books-by-title' element={<BookList />}  />
         </Routes>

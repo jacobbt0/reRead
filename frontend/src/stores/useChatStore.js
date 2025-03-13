@@ -16,7 +16,7 @@ export const useChatStore = create((set, get) => ({
       const bookId = useProductStore.getState().book._id
       const res = await axiosInstance.get(`/messages/users/${bookId}`);
 
-      set({ users: res.data });
+      set({ users: res.data , selectedUser: res.data[0] });
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -65,11 +65,22 @@ export const useChatStore = create((set, get) => ({
     });
   },
 
+  deleteMessage: async (messageId) => {
+    try {
+      const res = await axiosInstance.delete(`/messages/del/${messageId}`)
+    } catch (error) {
+      
+    }
+  },
+
   unsubscribeFromMessages: () => {
     const socket = useUserStore.getState().socket;
     socket?.off("newMessage");
   },
 
-  setSelectedUser: (selectedUser) => set({ selectedUser }),
+  setSelectedUser: (selectedUser) =>{
+    if(selectedUser !== useUserStore.getState().seller)
+    set({ selectedUser })
+  } ,
 
 }))

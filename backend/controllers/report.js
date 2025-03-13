@@ -3,6 +3,7 @@ import Report from "../models/report.js"
 export const getAllReports = async (req, res) => {
     try {
         const report = await Report.find({})
+        console.log(report)
         res.json(report)
     } catch (error) {
         console.log("Error in getAllReports controllers", error.message)
@@ -12,22 +13,22 @@ export const getAllReports = async (req, res) => {
 
 export const sendReport = async (req, res) => {
     try {
-        const { reportDescription, reportReason } = req.body
-    
-            const reportSenderId = req.user._id
-            const   { id: reportedUserId }  = req.params
-           
-            const newReport = new Report({
-                reportedUserId,
-                reportSenderId,
-                reportDescription,
-                reportReason,
-            })
-    
-            await newReport.save()
-    
-            res.status(201).json(newReport)
+
+        const { reason, details, bookId} = req.body
+        const { id: reportedUserId } = req.params
+
+        const newReport = new Report({
+            reason,
+            reportedUserId,
+            details,
+            bookId,
             
+        })
+
+        await newReport.save()
+
+        res.status(201).json(newReport)
+
     } catch (error) {
         console.log("Error in sendReport controller: ", error);
         res.status(500).json({ error: "Internal server error" });

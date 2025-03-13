@@ -7,17 +7,17 @@ const reportSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
-        reportSenderId: {
+        bookId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
             required: true,
         },
-        reportReason: {
+        
+        reason : {
             type: String,
             required: true,
             
         },
-        reportDescription: {
+        details: {
             type: String,
         }
     }, {

@@ -16,6 +16,10 @@ export const protectRoute = async (req, res, next) => {
 			if (!user) {
 				return res.status(401).json({ message: "User not found" });
 			}
+			if(user.banned){
+				to
+				return res.status(203).json({message: "User banned"})
+			}
 
 			req.user = user;
 

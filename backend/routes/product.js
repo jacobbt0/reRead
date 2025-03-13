@@ -13,12 +13,12 @@ import {
 import { protectRoute, adminRoute } from '../middleware/middleware.js'
 
 const router = express.Router()
- 
+  
 router.get("/search/:query", searchBook)
 router.get("/get-books/:title", getBooksByTitle)
 router.get('/', protectRoute, adminRoute, getAllBooks)
 router.post('/', protectRoute, createBook)
-router.delete('/:id', protectRoute, deleteBook)
+router.delete('/:id', protectRoute, deleteBook)  
 router.get("/get-account/:id", getAccount)
 router.get('/:department/:semester', getBooksBySemester)
 router.put("/:id", updateBook)

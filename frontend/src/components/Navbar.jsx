@@ -46,7 +46,7 @@ const Navbar = () => {
                         )}
 
                         {/* User Account */}
-                        {user && (
+                        {user && !isAdmin && (
                             <div className="flex gap-4 m-3">
                                 <Link to={"/account"} className='text-gray-700 hover:text-blue-500 transition duration-300'>
                                     <User className='inline-block mr-1' size={25} />
@@ -56,16 +56,7 @@ const Navbar = () => {
                             </div>
                         )}
 
-                        {/* Admin Dashboard */}
-                        {isAdmin && (
-                            <Link
-                                to={"/secret-dashboard"}
-                                className='bg-gray-800 hover:bg-gray-700 text-white px-3 py-1 rounded-md flex items-center transition duration-300'
-                            >
-                                <Lock className='inline-block mr-1' size={18} />
-                                <span className='hidden sm:inline'>Dashboard</span>
-                            </Link>
-                        )}
+                       
 
                         {user ? (
                             <button
