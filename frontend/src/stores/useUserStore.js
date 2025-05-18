@@ -4,11 +4,6 @@ import { toast } from "react-hot-toast";
 import { io } from "socket.io-client"
 
 
-
-
-
-const BASE_URL = "http://localhost:8888"
-
 export const useUserStore = create((set, get) => ({
 	user: null,
 	seller: null,
@@ -102,7 +97,7 @@ export const useUserStore = create((set, get) => ({
 		const { user } = get();
 		if (!user || get().socket?.connected) return;
 
-		const socket = io(BASE_URL, {
+		const socket = io(process.env.BASE_URL, {
 			query: {
 				userId: user._id,
 			},
