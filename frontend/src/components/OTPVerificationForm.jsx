@@ -51,7 +51,7 @@ const OTPVerificationForm = ({sendData}) => {
                 value={digit}
                 onChange={(e) => handleChange(e, index)}
                 maxLength="1"
-                className={`w-16 h-16 text-center text-2xl font-semibold border border-gray-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:outline-none ${getTextColor(digit)}`}
+                className={`w-16 h-16 text-center text-2xl font-semibold border bg-white border-gray-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:outline-none ${getTextColor(digit)}`}
               />
             ))}
           </div>

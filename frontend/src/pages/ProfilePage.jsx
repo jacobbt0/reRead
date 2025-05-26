@@ -53,7 +53,7 @@ const ProfilePage = () => {
                 <input
                   type="file"
                   id="avatar-upload"
-                  className="hidden"
+                  className="hidden bg-gray-50"
                   accept="image/*"
                   onChange={handleImageUpload}
                
