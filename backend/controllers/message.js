@@ -14,9 +14,7 @@ export const getUsersForSidebar = async (req, res) => {
     if (!bookId) {
       return res.status(400).json({ error: "Book ID is required" });
     }
-   console.log("bookSellerId.sellerId",bookSellerId[0].sellerId)
-   console.log("bookSellerId.",bookSellerId)
-   console.log("loggedInUserId", loggedInUserId)
+  
 
     if (bookSellerId[0].sellerId == loggedInUserId) {
       const messages = await Message.find({ bookId }).select("senderId receiverId")

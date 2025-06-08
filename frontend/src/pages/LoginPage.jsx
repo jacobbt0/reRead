@@ -59,7 +59,7 @@ const LoginPage = () => {
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className='w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'
+                  className='w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-gray-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500'
                   placeholder='0000000000'
                 />
               </div>
@@ -79,7 +79,7 @@ const LoginPage = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className='w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'
+                  className='w-full pl-10 pr-3 py-2 border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'
                   placeholder='••••••••'
                 />
               </div>

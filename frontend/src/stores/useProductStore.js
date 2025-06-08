@@ -92,10 +92,9 @@ export const useProductStore = create((set, get) => ({
 
 	fetchSearchBook: async (query) => {
 		try {
-
+			if(!query || query.trim() === "") return
 			const response = await axiosInstance.get(`/books/search/${query}`)
 			set({ searchResult: response.data, loading: false });
-
 
 
 		} catch (error) {

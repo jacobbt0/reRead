@@ -134,7 +134,9 @@ export const searchBook = async (req, res) => {
 
     try {
         const query = req.params.query
-        if (!query) return res.json([]);
+        if (!query || query.trim() === "") {
+           return res.json([])
+        }
 
         const books = await Product.find({
             $or: [
@@ -150,10 +152,10 @@ export const searchBook = async (req, res) => {
     }
 }
 
-export const getBooksByTitle = async (req,res) => {
+export const getBooksByTitle = async (req, res) => {
 
     const title = req.params.title
-  
+
     try {
         const books = await Product.find({ title })
         res.json(books)

@@ -22,10 +22,10 @@ const Sidebar = () => {
   if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200 bg-gray-200">
       
 
-      <div className="overflow-y-auto w-full py-5">
+      <div className="overflow-y-auto w-full py-5 bg-gray-200">
         {filteredUsers.map((user) => (
          
           <button
@@ -37,10 +37,10 @@ const Sidebar = () => {
             className={`
               w-full p-3 flex items-center gap-3
               hover:bg-base-300 transition-colors
-              ${selectedUser?._id === user._id ? "bg-base-300 ring-1 ring-base-300" : ""}
+              ${selectedUser?._id === user._id ? "bg-gray-300 ring-1 ring-gray-300" : ""}
             `}
           >
-            <div className="relative mx-auto lg:mx-0">
+            <div className="relative mx-auto lg:mx-0 bg-gray-200">
               <img
                 src={user.profilePic || "/avatar.png"}
                 alt={user.name}
